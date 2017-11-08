@@ -33,17 +33,6 @@ class BicyclesController extends Controller
     public function actionIndex($category)
     {
 
-        /*
-        $query = '
-                SELECT *
-                FROM products
-                INNER JOIN detail_value ON products.title_product = detail_value.title
-                WHERE detail_value.value = :white
-                GROUP BY detail_value.id_product
-                ';
-        $Bicycles = Yii::$app->db->createCommand($query, [':white' => 'white'])->queryAll();
-        */
-
         //считаем количество всех записей по данной категории
         $Bicycles_count = Product::find()->where('id_category = :id_category', [':id_category'=>$category]);
 
@@ -51,23 +40,30 @@ class BicyclesController extends Controller
         //создаем объект класса Pagination и передаем ему количество записей и количество, которое нужно выводить на одной странице
         $pages = new Pagination(['totalCount' => $Bicycles_count->count(), 'pageSize' => 6, 'forcePageParam' => false, 'pageSizeParam' => false]);
 
-        //создаем запрос (для страниц через query). 
-        //$Bicycles_count->offset => начальное значение
-        //$Bicycles_count->limit => это сколько выводить на одной странице
-        $Bicycles = $Bicycles_count->offset($pages->offset)->limit($pages->limit)->all();
+        //Select All news by category with pagination
+        $Bicycles = Product::getNewsByCategory($pages->offset, $pages->limit, $category);
 
+        //Select all colors of product
+        $Color = Product::getColorsForProduct($Bicycles);
 
         //get active category
         $ActiveCategory = Category::find()->where('id_category = :id_category', [':id_category' => $category])->one();
 
         //compact => передача в модель mian
-        return $this->render('main',compact('Bicycles', 'pages', 'ActiveCategory'));
+        return $this->render('main',compact('Bicycles', 'pages', 'ActiveCategory', 'Color'));
     }
 
     public function actionView($id_product)
     {
         $Product = Product::find()->where('id_product = :id_product', [':id_product' => $id_product])->one();
 
+        //update count of view for every product
+        /*$Count = $Product->view + 1;
+        Yii::$app->db->createCommand()
+        ->update('products', ['view' => $Count], 'id_product = :id_product', [':id_product' => $id_product])
+        ->execute();*/
+
+        //select all details for every product
         $query = 'SELECT detail_value.value as value, detail_attribute.title as title
             FROM detail_value
             INNER JOIN detail_attribute ON detail_value.id_detail_attribute = detail_attribute.id_detail_attribute
@@ -85,6 +81,33 @@ class BicyclesController extends Controller
     ******************************************************************** 
     */
 
+    //Ajax: delete from cart
+    public function actionDeletefromcart()
+    {
+
+        if(isset($_GET['id_product'])){
+            foreach ($_COOKIE as $id => $value) {
+            if($id == $_GET['id_product']){
+                setcookie($id, '', strtotime('-60 days'),"/");
+                //setcookie($id,'');//удаление куки
+
+                if(isset($_COOKIE['count_product'])){
+                    $Count = $_COOKIE['count_product'];
+                    $Count--;
+                    
+                    //обновлям куки
+                    setcookie('count_product','');
+                    setcookie('count_product', $Count, strtotime('+30 days'),"/");
+                    $CountUpdate = $_COOKIE['count_product'];
+
+                    //return count products in the cart
+                    echo $CountUpdate;
+                }
+                }
+            }
+        }
+    }
+
     //Ajax: update counter of products
     public function actionCountupdate()
     {
@@ -97,8 +120,8 @@ class BicyclesController extends Controller
                 $new_value = serialize($Prod);
                 
                 //обновлям куки
-                setcookie($id,"test",time()-3600,"/");
-                setcookie($id,$new_value, strtotime( '+30 days' ));
+                setcookie($id,"");
+                setcookie($id,$new_value, strtotime('+30 days'),"/");
                 }
             }
         }
@@ -124,7 +147,7 @@ class BicyclesController extends Controller
                 $Product['count'] = $product['count'];
                 $Product['counter'] = 1;
 
-                setcookie($Product['id_product'],serialize($Product), strtotime( '+30 days' ));
+                setcookie($Product['id_product'],serialize($Product), strtotime('+30 days'),"/");
                 
                 foreach ($_COOKIE as $id => $value) {
                 if($id > 0){
@@ -138,7 +161,7 @@ class BicyclesController extends Controller
                     
                     //обновлям куки
                     setcookie('count_product',' ',time()-3600,"/");
-                    setcookie('count_product', $Count, strtotime( '+30 days' ));
+                    setcookie('count_product', $Count, strtotime('+30 days'),"/");
                     $CountUpdate = $_COOKIE['count_product'];
 
                     //return count products in the cart
@@ -187,32 +210,6 @@ class BicyclesController extends Controller
                         </div>
                       </div>
                 ';
-            }
-        }
-    }
-
-
-    //Ajax: delete from cart
-    public function actionDeletefromcart()
-    {
-        if(isset($_GET['id_product'])){
-            foreach ($_COOKIE as $id => $value) {
-            if($id == $_GET['id_product']){
-                setcookie($id,'');//удаление куки
-
-                if(isset($_COOKIE['count_product'])){
-                    $Count = $_COOKIE['count_product'];
-                    $Count--;
-                    
-                    //обновлям куки
-                    setcookie('count_product','');
-                    setcookie('count_product', $Count, strtotime( '+30 days' ));
-                    $CountUpdate = $_COOKIE['count_product'];
-
-                    //return count products in the cart
-                    echo $CountUpdate-1;
-                }
-                }
             }
         }
     }

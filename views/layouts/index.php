@@ -22,7 +22,6 @@ AppAsset::register($this);
   </head>
   <body>
   <?php $this->beginBody() ?>
-    
   <!--*************************** Slider ***************************-->
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators hidden-sm hidden-xs">
@@ -116,19 +115,20 @@ AppAsset::register($this);
                 </li>
                 <li><a href="<?= '/extras' ?>" id="menu-item">EXTRAS</a></li>
                 <li><a href="#" id="basket" data-toggle="modal" data-target="#myModal">
-                  <? 
+                  <?
                   //количество товаров в корзине
                   if(!isset($_COOKIE['count_product'])){
                       $count = 0;
                       setcookie('count_product',$count, strtotime( '+30 days' ));
-                      $Count = '';
+                      
                   }else{
                       if($_COOKIE['count_product'] > 0){
-                        $Count = $_COOKIE['count_product'];
+                        echo '<span class="counter-product" style="margin-left: 25px;">'.$_COOKIE['count_product'].'</span>';
+                        //$Count = $_COOKIE['count_product'];
                       }
                   }
                   ?>
-                  <span class="counter-product" style="margin-left: 25px;"><? echo $Count ?></span>
+                  
                   </a>
                 </li>
               </ul>
@@ -144,7 +144,7 @@ AppAsset::register($this);
       <h1>HANDMADE BICYCLE</h1>
       <span class="slogan">You <span class="yellow">create</span> the <span class="yellow">journey,</span> we supply the <span class="yellow">parts.</span> </span>
       <div class="">
-        <a class="btn btn-default btn-sm btn-black" href="" id="btn-slider">SHOP BIKES</a>
+        <a class="btn btn-default btn-sm btn-black" href="<?= Url::to(['bicycles/index', 'category' => 4]) ?>" id="btn-slider">SHOP BIKES</a>
       </div>
     </div>
   </div>
@@ -157,12 +157,12 @@ AppAsset::register($this);
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">Your cart</h4>
-          <span class="cart-subtitle">You have 2 items for a total of US$60.80 in your basket. </span>
+          <span class="cart-subtitle">Select the number of products and order.</span>
         </div>
         <div class="modal-body">
 
           <!--****** There output AJAX products ******-->
-          ваша корзина пуста
+          
         </div>
         <!--****** Modal footer ******-->
         <div class="modal-footer">
@@ -226,7 +226,7 @@ AppAsset::register($this);
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand footer-brand" href="#">
+              <a class="navbar-brand footer-brand" href="/">
                 <img alt="Brand" class="logo" src="/images/logo-black.png" width="100" height="31">
               </a>
             </div>
@@ -237,22 +237,49 @@ AppAsset::register($this);
                 <li class="dropdown dropup">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">BICYCLES</a>
                   <ul class="dropdown-menu" id="footer-nav-ul">
-                    <li><a href="#" id="menu-item">FIXED / SINGLE SPEED</a></li>
-                    <li><a href="#" id="menu-item">CITY BIKES</a></li>
-                    <li><a href="#" id="menu-item">PREMIUM SERIES</a></li>
+                    <?
+                      if(isset($this->context->menuCatBicycle) && $this->context->menuCatBicycle != null)
+                      {
+                        foreach ($this->context->menuCatBicycle as $CatBicycle){
+                          echo '
+                            <li><a href="'. Url::to(['bicycles/index', 'category' => $CatBicycle['id_category']]) .'" id="menu-item">'.$CatBicycle['title'].'</a></li>
+                          ';
+                        }
+                      }
+                    ?>
                   </ul>
                 </li>
                 <li class="dropdown dropup">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">parts</a>
                   <ul class="dropdown-menu" id="footer-nav-ul">
-                    <li><a href="#" id="menu-item">saddles</a></li>
-                    <li><a href="#" id="menu-item">handlebars</a></li>
-                    <li><a href="#" id="menu-item">pedals</a></li>
-                    <li><a href="#" id="menu-item">wheels</a></li>
+                    <?
+                      if(isset($this->context->menuCatParts) && $this->context->menuCatParts != null)
+                      {
+                        foreach ($this->context->menuCatParts as $CatParts){
+                          echo '
+                            <li><a href="'. Url::to(['bicycles/index', 'category' => $CatParts['id_category']]) .'" id="menu-item">'.$CatParts['title'].'</a></li>
+                          ';
+                        }
+                      }
+                    ?>
                   </ul>
                 </li>
-                <li><a href="#" id="menu-item">ACCESSORIES</a></li>
-                <li><a href="#" id="menu-item">EXTRAS</a></li>
+                <li class="dropdown dropup">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">ACCESSORIES</a>
+                  <ul class="dropdown-menu" id="footer-nav-ul">
+                    <?
+                      if(isset($this->context->menuCatAccessories) && $this->context->menuCatAccessories != null)
+                      {
+                        foreach ($this->context->menuCatAccessories as $CatAccessories){
+                          echo '
+                            <li><a href="'. Url::to(['bicycles/index', 'category' => $CatAccessories['id_category']]) .'" id="menu-item">'.$CatAccessories['title'].'</a></li>
+                          ';
+                        }
+                      }
+                    ?>
+                  </ul>
+                </li>
+                <li><a href="<?= '/extras' ?>" id="menu-item">EXTRAS</a></li>
               </ul>
             </div>
 
@@ -282,7 +309,7 @@ AppAsset::register($this);
     });
   </script>
 
- <!-- Input Counter in the Cart -->
+  <!-- Input Counter in the Cart -->
   <script type="text/javascript">
 
     //обновление счетчика товаров
@@ -417,10 +444,6 @@ AppAsset::register($this);
           //получаем значение id
           var id_product = $(this).val();
 
-          //скрываем кнопку
-          $(this).attr('disabled',true);
-          $(this).text('BUYED');
-
           $.ajax({
             type: "GET",
             url: "/bicycles/addtocart",
@@ -454,6 +477,20 @@ AppAsset::register($this);
               //alert('Товар был успешно добавлен в корзину!');
             }
           });
+      });
+
+
+      $('.selector').change(function(){
+        //получаем значение селекта
+        var value = $(this).val();
+        //получаем айди продукта, который вывели первым, чтобы менять в нем ссылки
+        var id_first_prodct = this.getAttribute("data-idfirst");
+        
+        var title = '#title-'+id_first_prodct;
+        var button = '#button-'+id_first_prodct;
+
+        $(title).attr("href", "/bicycles/view?id_product="+value);
+        $(button).val(value);
       });
   </script>
 

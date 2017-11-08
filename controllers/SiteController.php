@@ -9,9 +9,27 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Category;
+use app\models\Product;
 
 class SiteController extends Controller
 {
+    //Create public virable for print categories in layout
+    public $menuCatBicycle;
+    public $menuCatParts;
+    public $menuCatAccessories;
+
+    public function __construct($id, $module, $config = [])
+    {
+        //get all categories in the menu
+        $this->menuCatBicycle = Category::find()->where('id_parent = 1')->all();
+        $this->menuCatParts = Category::find()->where('id_parent = 2')->all();
+        $this->menuCatAccessories = Category::find()->where('id_parent = 3')->all();
+        
+        parent::__construct($id, $module, $config);
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -61,9 +79,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        //select count of orders for every prod.
+        $Bicycles = Product::getPopularProduct();
+        $Color = Product::getColorsForProduct($Bicycles);
+
         //укажем, что будем использовать layout для index
         $this->layout = 'index';
-        return $this->render('index');
+
+        return $this->render('index',compact('Bicycles', 'Color'));
     }
 
     /**

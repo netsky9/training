@@ -3,7 +3,10 @@
 namespace app\controllers;
 
 use yii\web\Controller;
+use app\models\Product;
 use app\models\Category;
+use app\models\Details;
+use Yii;
 
 class ExtrasController extends Controller
 {
@@ -21,13 +24,12 @@ class ExtrasController extends Controller
 
         parent::__construct($id, $module, $config);
     }
-    
     /**
      * Displays homepage.
      */
     public function actionIndex()
     {
-    	
+
         return $this->render('main');
     }
 }
