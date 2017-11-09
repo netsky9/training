@@ -15,6 +15,7 @@ class LoginForm extends Model
 {
     public $username;
     public $password;
+    public $auth_key;
     public $rememberMe = true;
 
     private $_user = false;
@@ -60,6 +61,11 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
+            if($this->rememberMe){
+                $u = $this->getUser();
+                $u->generateAuthKey();//рандомная строка для авторизации (метод в модели user)
+                $u->save();
+            }
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;

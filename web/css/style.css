@@ -821,3 +821,9 @@ a:hover{
 .center-block{
     text-align: center;
 }
+
+.login-btn-margin{
+    float: right;
+    margin-top: -30px;
+    margin-bottom: 40px;
+}
