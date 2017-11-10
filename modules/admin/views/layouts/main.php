@@ -59,6 +59,12 @@ AppAsset::register($this);
                     </a>
                 </li>
                 <li>
+                    <a href="<?= Url::to('/admin/detailattribute'); ?>">
+                        <i class="pe-7s-edit"></i>
+                        <p>Products details</p>
+                    </a>
+                </li>
+                <li>
                     <a href="<?= Url::to('/admin/buyers'); ?>">
                         <i class="pe-7s-id"></i>
                         <p>Buyers</p>

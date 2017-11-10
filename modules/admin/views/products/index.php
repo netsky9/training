@@ -22,7 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id_product',
-            'title_product',
+            //'title_product',
+            [
+                'attribute' => 'title_product',
+                'value' => function($data){
+                    return '<a href="/bicycles/view?id_product='.$data->id_product.'">'.$data->title_product.'</a>';
+                },
+                'format' => 'html',
+            ],
             'id_category',
             'description:ntext',
             'price',
