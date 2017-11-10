@@ -61,7 +61,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   margin: 30px 0 15px; }
 
 h1, .h1 {
-  font-size: 52px; }
+  font-size: 32px; }
 
 h2, .h2 {
   font-size: 36px; }
@@ -2833,4 +2833,56 @@ body > .navbar-collapse {
     overflow-x: scroll;
     overflow-y: hidden;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    -webkit-overflow-scrolling: touch; } }
+    -webkit-overflow-scrolling: touch; } 
+}
+
+.right{
+    float: right;
+}
+
+.pagination > li.active > a, .pagination > li.active > span, .pagination > li.active > a:hover, .pagination > li.active > span:hover, .pagination > li.active > a:focus, .pagination > li.active > span:focus {
+    background-color: #23CCEF;
+    border: 0;
+    color: #FFFFFF;
+    padding: 7px 13px;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover {
+    z-index: 2;
+    color: #23527c;
+    background-color: #eee;
+    border-color: #ddd0;
+}
+
+.pagination > li > a, .pagination > li > span, .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-radius: 50%;
+    margin: 0 2px;
+    color: #797979;
+}
+
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #2d2d2d;
+    text-decoration: none;
+    background-color: #fff0;
+    border: 1px solid #fdfdfd00;
+}
+
+.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff0;
+    border-color: #f7f7f700;
+}

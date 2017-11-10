@@ -10,6 +10,7 @@ AppAsset::register($this);
 <!doctype html>
 <html lang="en">
 <head>
+  <?= Html::csrfMetaTags() ?>
   <meta charset="<?= Yii::$app->charset ?>" />
   <link rel="icon" type="image/png" href="assets/img/favicon.ico">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -22,7 +23,7 @@ AppAsset::register($this);
 <body>
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="purple" data-image="/modules/admin/web/img/sidebar-5.jpg">
 
     <!--
 
@@ -33,58 +34,34 @@ AppAsset::register($this);
 
       <div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
+                <a href="/" class="simple-text">
+                    Bicycle shop
                 </a>
             </div>
 
             <ul class="nav">
-                <li class="active">
-                    <a href="dashboard.html">
-                        <i class="pe-7s-graph"></i>
-                        <p>Dashboard</p>
+                <li>
+                    <a href="<?= Url::to('/admin/orders'); ?>">
+                        <i class="pe-7s-shopbag"></i>
+                        <p>Orders</p>
                     </a>
                 </li>
                 <li>
-                    <a href="user.html">
-                        <i class="pe-7s-user"></i>
-                        <p>User Profile</p>
+                    <a href="<?= Url::to('/admin/products'); ?>">
+                        <i class="pe-7s-bicycle"></i>
+                        <p>Products</p>
                     </a>
                 </li>
                 <li>
-                    <a href="table.html">
-                        <i class="pe-7s-note2"></i>
-                        <p>Table List</p>
+                    <a href="<?= Url::to('/admin/categories'); ?>">
+                        <i class="pe-7s-menu"></i>
+                        <p>Categories</p>
                     </a>
                 </li>
                 <li>
-                    <a href="typography.html">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Typography</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="pe-7s-science"></i>
-                        <p>Icons</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="maps.html">
-                        <i class="pe-7s-map-marker"></i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="notifications.html">
-                        <i class="pe-7s-bell"></i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-                <li class="active-pro">
-                    <a href="upgrade.html">
-                        <i class="pe-7s-rocket"></i>
-                        <p>Logout</p>
+                    <a href="<?= Url::to('/admin/buyers'); ?>">
+                        <i class="pe-7s-id"></i>
+                        <p>Buyers</p>
                     </a>
                 </li>
             </ul>
@@ -171,8 +148,11 @@ AppAsset::register($this);
             </div>
         </nav>
 
-
-       <?= $content; ?> 
+        <div class="content">
+          <div class="container-fluid">
+            <?= $content; ?> 
+          </div>
+        </div>  
 
 
         <!--<footer class="footer">
