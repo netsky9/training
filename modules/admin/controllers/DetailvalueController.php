@@ -3,17 +3,17 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\modules\admin\models\Products;
 use app\modules\admin\models\Detailvalue;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
- * ProductsController implements the CRUD actions for Products model.
+ * DetailvalueController implements the CRUD actions for Detailvalue model.
  */
-class ProductsController extends Controller
+class DetailvalueController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,16 +31,13 @@ class ProductsController extends Controller
     }
 
     /**
-     * Lists all Products models.
+     * Lists all Detailvalue models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Products::find(),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
+            'query' => Detailvalue::find(),
         ]);
 
         return $this->render('index', [
@@ -49,7 +46,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Displays a single Products model.
+     * Displays a single Detailvalue model.
      * @param integer $id
      * @return mixed
      */
@@ -61,16 +58,16 @@ class ProductsController extends Controller
     }
 
     /**
-     * Creates a new Products model.
+     * Creates a new Detailvalue model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Products();
+        $model = new Detailvalue();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_product]);
+            return $this->redirect(['view', 'id' => $model->id_detail_value]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -79,7 +76,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Updates an existing Products model.
+     * Updates an existing Detailvalue model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -89,7 +86,7 @@ class ProductsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_product]);
+            return $this->redirect(['view', 'id' => $model->id_detail_value]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -98,29 +95,28 @@ class ProductsController extends Controller
     }
 
     /**
-     * Deletes an existing Products model.
+     * Deletes an existing Detailvalue model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $id_product)
     {
         $this->findModel($id)->delete();
-        Detailvalue::deleteAll('id_product = :id_product', [':id_product' => $id]);
 
-        return $this->redirect(['index']);
+        return $this->redirect(Url::to(['products/view', 'id' => $id_product]));
     }
 
     /**
-     * Finds the Products model based on its primary key value.
+     * Finds the Detailvalue model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Products the loaded model
+     * @return Detailvalue the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Products::findOne($id)) !== null) {
+        if (($model = Detailvalue::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -11,6 +11,7 @@ class DefaultController extends AppAdminController
     public function actionIndex()
     {
 
-        return $this->render('index');
+    	return $this->redirect(['/admin/orders']);
+        //return $this->render('index');
     }
 }

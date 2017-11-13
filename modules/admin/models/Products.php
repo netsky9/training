@@ -31,6 +31,12 @@ class Products extends \yii\db\ActiveRecord
         return $this->hasOne(Categories::className(), ['id_category' => 'id_category']);
     }
 
+    public function getDetailvalue()
+    {
+        return $this->hasMany(Detailvalue::className(), ['id_product' => 'id_product']);
+    }
+
+
     /**
      * @inheritdoc
      */

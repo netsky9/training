@@ -42,6 +42,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+
+       <? $Details = $model->detailvalue;?>
+
+        <table id="w0" class="table table-striped table-bordered detail-view">
+            <tbody>
+                <? foreach ($Details as $Det): 
+                   $DetailAttr = $Det->detailattribute;
+                ?>
+                <tr><th><?= $DetailAttr['title'] ?></th><td><?= $Det['value'] ?></td><td><a href="/admin/detailvalue/view?id=<?= $Det['id_detail_value'] ?>" title="View" aria-label="View" data-pjax="0"><span class="glyphicon glyphicon-eye-open"></span></a> <a href="/admin/detailvalue/update?id=<?= $Det['id_detail_value'] ?>" title="Update" aria-label="Update" data-pjax="0"><span class="glyphicon glyphicon-pencil"></span></a> <a href="/admin/detailvalue/delete?id=<?= $Det['id_detail_value'] ?>&id_product=<?= Yii::$app->request->get('id') ?>" title="Delete" aria-label="Delete" data-pjax="0" data-confirm="Are you sure you want to delete this item?" data-method="post"><span class="glyphicon glyphicon-trash"></span></a></td></tr>
+                <? endforeach ?>
+            </tbody>
+        </table>
+
+
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id_product], ['class' => 'btn btn-info btn-fill btn-wd']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id_product], [

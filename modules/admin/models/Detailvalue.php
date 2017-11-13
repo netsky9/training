@@ -23,6 +23,16 @@ class Detailvalue extends \yii\db\ActiveRecord
         return 'detail_value';
     }
 
+    public function getProducts()
+    {
+        return $this->hasOne(Products::className(), ['id_product' => 'id_product']);
+    }
+
+    public function getDetailattribute()
+    {
+        return $this->hasOne(Detailattribute::className(), ['id_detail_attribute' => 'id_detail_attribute']);
+    }
+
     /**
      * @inheritdoc
      */
