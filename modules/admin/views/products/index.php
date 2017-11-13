@@ -16,12 +16,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Products', ['create'], ['class' => 'btn btn-success right']) ?>
     </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id_product',
+            [
+                'attribute' => 'Image',
+                'value' => function($data){
+                    $img = $data->getImage();
+                    return "<img src='{$img->getUrl('100x')}'>";
+                },
+                'format' => 'html',
+            ],
             //'title_product',
             [
                 'attribute' => 'title_product',

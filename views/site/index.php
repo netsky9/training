@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\BaseStringHelper;
+use app\models\Image;
 
 $this->title = 'Bicycle shop';
 ?>
@@ -48,11 +49,14 @@ $this->title = 'Bicycle shop';
       <div class="row">
         <? foreach ($Bicycles as $Bic): ?>
         <div class="col-md-4 col-sm-4 col-xs-12">
-          <img class="bikes-img" src="/images/bikes/1.jpg">
+          <? $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Bic['id_product']])->one(); 
+          if(isset($Img)) echo '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'">';
+          else  echo '<img class="bikes-img" src="/web/upload/store/no-image.jpg">';
+          ?>
           <div class="row">
             <div class="col-md-5 col-sm-12 col-xs-5">
               <a id="title-<?= $Bic['id_product'] ?>" href="<?= Url::to(['bicycles/view', 'id_product' => $Bic['id_product']]) ?>"><h3><?= BaseStringHelper::truncate($Bic['title_product'],13,'..') ?></h3></a>
-              $<?= $Bic['price'] ?>
+              <?= $Bic['id_product'] ?>$<?= $Bic['price'] ?>
             </div>
             <div class="col-md-7 col-sm-12 col-xs-7">
               <div class="row">

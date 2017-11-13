@@ -41,7 +41,7 @@ class BicyclesController extends Controller
         $pages = new Pagination(['totalCount' => $Bicycles_count->count(), 'pageSize' => 6, 'forcePageParam' => false, 'pageSizeParam' => false]);
 
         //Select All news by category with pagination
-        $Bicycles = Product::getNewsByCategory($pages->offset, $pages->limit, $category);
+        $Bicycles = Product::getProductsByCategory($pages->offset, $pages->limit, $category);
 
         //Select all colors of product
         $Color = Product::getColorsForProduct($Bicycles);

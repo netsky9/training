@@ -17,7 +17,8 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "costa-rico/yii2-images": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -29,6 +30,10 @@
         "codeception/specify": "~0.4.3"
     },
     "config": {
+        "github-oauth": {
+          "github.com": "3de211795a15ed9fee6015b47ebbeb9f5588e5a2"
+          }
+        ,
         "process-timeout": 1800,
         "fxp-asset":{
             "installer-paths": {
@@ -36,6 +41,7 @@
                 "bower-asset-library": "vendor/bower"
             }
         }
+
     },
     "scripts": {
         "post-create-project-cmd": [

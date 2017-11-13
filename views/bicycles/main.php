@@ -6,6 +6,7 @@ use yii\helpers\Html;
 use yii\helpers\BaseStringHelper;
 use yii\widgets\LinkPager;
 use yii\helpers\Url;
+use app\models\Image;
 
 $this->title = 'Bicycles';
 ?>
@@ -17,7 +18,11 @@ $this->title = 'Bicycles';
       <div class="row">
         <? foreach ($Bicycles as $Bic): ?>
         <div class="col-md-4 col-sm-4 col-xs-12">
-          <img class="bikes-img" src="/images/bikes/1.jpg">
+
+          <? $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Bic['id_product']])->one(); 
+          if(isset($Img)) echo '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'">';
+          else  echo '<img class="bikes-img" src="/web/upload/store/no-image.jpg">';
+          ?>
           
           <? if($ActiveCategory->id_parent == 1): ?>
           <div class="row">

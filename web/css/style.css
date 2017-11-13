@@ -370,6 +370,8 @@ h3{
 }
 .bikes-img{
     width: 100%;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 .btn-grey {
     background-color: #b7b7b7;

@@ -9,8 +9,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="products-form">
-
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'title_product')->textInput(['maxlength' => true]) ?>
 
@@ -23,6 +22,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'rent_sale')->textInput() ?>
 
     <?= $form->field($model, 'count')->textInput() ?>
+
+    <?= $form->field($model, 'image')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success btn-fill btn-wd' : 'btn btn-primary btn-fill btn-wd']) ?>

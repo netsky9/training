@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="products-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <? $img = $model->getImage(); ?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -25,6 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($data){
                     return $data->categories->title;
                 },
+            ],
+            [
+                'attribute' => 'Image',
+                'value' => "<img src='{$img->getUrl('250x')}'>",
+                'format' => 'html',
             ],
             'description:ntext',
             'price',

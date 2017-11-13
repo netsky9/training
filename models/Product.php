@@ -6,6 +6,16 @@ use Yii;
 
 class Product extends ActiveRecord
 {
+    //поведение для вывода картинок
+    public function behaviors()
+    {
+        return [
+            'image' => [
+                'class' => 'rico\yii2images\behaviors\ImageBehave',
+            ]
+        ];
+    }
+
     /*
     * Указываем, к какой таблице обращаться, через модель Product
     */
@@ -14,10 +24,10 @@ class Product extends ActiveRecord
         return 'products';
     }
 
-    public static function getNewsByCategory($pages_offset, $pages_limit, $category)
+    public static function getProductsByCategory($pages_offset, $pages_limit, $category)
     {
     	$bikes = '
-            SELECT *
+            SELECT products.*
             FROM products
             WHERE id_category = :id_category
             GROUP BY title_product
@@ -62,4 +72,5 @@ class Product extends ActiveRecord
 
         return $Product;
     }
+
 }

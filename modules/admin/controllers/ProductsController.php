@@ -7,6 +7,7 @@ use app\modules\admin\models\Products;
 use app\modules\admin\models\Detailvalue;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -89,6 +90,11 @@ class ProductsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->image = UploadedFile::getInstance($model, 'image');
+            if($model->image){
+                $model->upload();
+            }
+
             return $this->redirect(['view', 'id' => $model->id_product]);
         } else {
             return $this->render('update', [
@@ -126,4 +132,5 @@ class ProductsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }
