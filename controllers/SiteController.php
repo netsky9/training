@@ -61,6 +61,11 @@ class SiteController extends Controller
      */
     public function actions()
     {
+        /*
+        назначение пользователю роль админа
+        $userRole = Yii::$app->authManager->getRole('user');
+        Yii::$app->authManager->assign($userRole, 2);
+        */
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -79,6 +84,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
         //select count of orders for every prod.
         $Bicycles = Product::getPopularProduct();
         $Color = Product::getColorsForProduct($Bicycles);
@@ -86,7 +92,7 @@ class SiteController extends Controller
         //укажем, что будем использовать layout для index
         $this->layout = 'index';
 
-        return $this->render('index',compact('Bicycles', 'Color'));
+        return $this->render('index', compact('Bicycles', 'Color'));
     }
 
     /**
@@ -167,5 +173,4 @@ class SiteController extends Controller
         //указываем какой вид подключить. Строка hello - это вид hello.php
         return $this->render('extras');
     }
-
 }

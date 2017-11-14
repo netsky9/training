@@ -8,7 +8,6 @@ use Yii;
 
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
-
     public static function tableName()
     {
         return 'users';
@@ -37,7 +36,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function getAuthKey()
     {
         return $this->auth_key;
-    }   
+    }
 
     public function validateAuthKey($auth_key)
     {
@@ -53,5 +52,4 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         $this->auth_key = \Yii::$app->security->generateRandomString();
     }
-
 }

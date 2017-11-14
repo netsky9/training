@@ -14,12 +14,12 @@ $this->title = 'Bicycles';
     <div class="container">
       <h2>Fixed / single speed</h2>
       <div class="row">
-        <? foreach ($Bicycles as $Bic): ?>
+        <?php foreach ($Bicycles as $Bic): ?>
         <div class="col-md-4 col-sm-4 col-xs-12">
           <img class="bikes-img" src="/images/bikes/1.jpg">
           <div class="row">
             <div class="col-md-5 col-sm-12 col-xs-5">
-              <h3><?= BaseStringHelper::truncate($Bic->title_product,13,'..') ?></h3>
+              <h3><?= BaseStringHelper::truncate($Bic->title_product, 13, '..') ?></h3>
               $<?= $Bic->price ?>
             </div>
             <div class="col-md-7 col-sm-12 col-xs-7">
@@ -38,12 +38,12 @@ $this->title = 'Bicycles';
             </div>    
           </div>
         </div>
-        <? endforeach ?>
+        <?php endforeach ?>
 
         <!--****** Pagination ******-->
         <div class="super-slim-container">
           <!-- maxButtonCount - количество видимых кнопок -->
-          <? echo LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 5]); ?>
+          <?php echo LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 5]); ?>
           </ul>
         </div>
 

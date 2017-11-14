@@ -1,0 +1,6 @@
+projectKey=runner
+serverUrl=http://localhost:9000
+serverVersion=6.7.0.33306
+dashboardUrl=http://localhost:9000/dashboard/index/runner
+ceTaskId=AV-55ck-FDb8xAYRt7co
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AV-55ck-FDb8xAYRt7co

@@ -10,6 +10,8 @@ use Yii;
 
 use yii\data\Pagination;
 
+define("COOCKIE_TIME", "+30 days");
+
 class BicyclesController extends Controller
 {
     //Create public virable for print categories in layout
@@ -50,18 +52,12 @@ class BicyclesController extends Controller
         $ActiveCategory = Category::find()->where('id_category = :id_category', [':id_category' => $category])->one();
 
         //compact => передача в модель mian
-        return $this->render('main',compact('Bicycles', 'pages', 'ActiveCategory', 'Color'));
+        return $this->render('main', compact('Bicycles', 'pages', 'ActiveCategory', 'Color'));
     }
 
     public function actionView($id_product)
     {
         $Product = Product::find()->where('id_product = :id_product', [':id_product' => $id_product])->one();
-
-        //update count of view for every product
-        /*$Count = $Product->view + 1;
-        Yii::$app->db->createCommand()
-        ->update('products', ['view' => $Count], 'id_product = :id_product', [':id_product' => $id_product])
-        ->execute();*/
 
         //select all details for every product
         $query = 'SELECT detail_value.value as value, detail_attribute.title as title
@@ -72,37 +68,36 @@ class BicyclesController extends Controller
         $Details = Yii::$app->db->createCommand($query, [':id_product' => $Product->id_product])->queryAll();
 
         //compact => передача в модель mian
-        return $this->render('view',compact('id_product', 'Product', 'Details'));
+        return $this->render('view', compact('id_product', 'Product', 'Details'));
     }
 
-   /*
-    ********************************************************************
-    *                  AJAX request processing                         *
-    ******************************************************************** 
-    */
+    /*
+     ********************************************************************
+     *                  AJAX request processing                         *
+     ********************************************************************
+     */
 
     //Ajax: delete from cart
     public function actionDeletefromcart()
     {
-
-        if(isset($_GET['id_product'])){
+        if (isset($_GET['id_product'])) {
             foreach ($_COOKIE as $id => $value) {
-            if($id == $_GET['id_product']){
-                setcookie($id, '', strtotime('-60 days'),"/");
-                //setcookie($id,'');//удаление куки
+                if ($id == $_GET['id_product']) {
+                    setcookie($id, '', strtotime('-60 days'), "/");
+                    //setcookie($id,'');//удаление куки
 
-                if(isset($_COOKIE['count_product'])){
-                    $Count = $_COOKIE['count_product'];
-                    $Count--;
+                    if (isset($_COOKIE['count_product'])) {
+                        $Count = $_COOKIE['count_product'];
+                        $Count--;
                     
-                    //обновлям куки
-                    setcookie('count_product','');
-                    setcookie('count_product', $Count, strtotime('+30 days'),"/");
-                    $CountUpdate = $_COOKIE['count_product'];
+                        //обновлям куки
+                        setcookie('count_product', '');
+                        setcookie('count_product', $Count, strtotime(COOCKIE_TIME), "/");
+                        $CountUpdate = $_COOKIE['count_product'];
 
-                    //return count products in the cart
-                    echo $CountUpdate;
-                }
+                        //return count products in the cart
+                        echo $CountUpdate;
+                    }
                 }
             }
         }
@@ -111,17 +106,17 @@ class BicyclesController extends Controller
     //Ajax: update counter of products
     public function actionCountupdate()
     {
-        if(isset($_GET['counter'])){
+        if (isset($_GET['counter'])) {
             foreach ($_COOKIE as $id => $value) {
-            if($id == $_GET['id_product']){
-                $Prod = unserialize($value);
-                $Prod['counter'] = $_GET['counter'];
+                if ($id == $_GET['id_product']) {
+                    $Prod = unserialize($value);
+                    $Prod['counter'] = $_GET['counter'];
                 
-                $new_value = serialize($Prod);
+                    $new_value = serialize($Prod);
                 
-                //обновлям куки
-                setcookie($id,"");
-                setcookie($id,$new_value, strtotime('+30 days'),"/");
+                    //обновлям куки
+                    setcookie($id, "");
+                    setcookie($id, $new_value, strtotime(COOCKIE_TIME), "/");
                 }
             }
         }
@@ -130,11 +125,10 @@ class BicyclesController extends Controller
     //Ajax: add to cart
     public function actionAddtocart()
     {
-        if(isset($_GET['id_product'])){
+        if (isset($_GET['id_product'])) {
 
             //the product is already in the cart?
-            if(!array_key_exists($_GET['id_product'], $_COOKIE)){
-                
+            if (!array_key_exists($_GET['id_product'], $_COOKIE)) {
                 $product = Product::findOne($_GET['id_product']);
                 //инициализация количества товаров
                 
@@ -147,28 +141,27 @@ class BicyclesController extends Controller
                 $Product['count'] = $product['count'];
                 $Product['counter'] = 1;
 
-                setcookie($Product['id_product'],serialize($Product), strtotime('+30 days'),"/");
+                setcookie($Product['id_product'], serialize($Product), strtotime('+30 days'), "/");
                 
                 foreach ($_COOKIE as $id => $value) {
-                if($id > 0){
-                    $Prod = $value;
+                    if ($id > 0) {
+                        $Prod = $value;
                     }
                 }
                 
-                if(isset($_COOKIE['count_product'])){
+                if (isset($_COOKIE['count_product'])) {
                     $Count = $_COOKIE['count_product'];
                     $Count++;
                     
                     //обновлям куки
-                    setcookie('count_product',' ',time()-3600,"/");
-                    setcookie('count_product', $Count, strtotime('+30 days'),"/");
+                    setcookie('count_product', ' ', time()-3600, "/");
+                    setcookie('count_product', $Count, strtotime('+30 days'), "/");
                     $CountUpdate = $_COOKIE['count_product'];
 
                     //return count products in the cart
                     echo $CountUpdate+1;
                 }
-
-            }else{
+            } else {
                 echo 'is_exist';
             }
         }
@@ -179,7 +172,7 @@ class BicyclesController extends Controller
     {
         $flag = 0;
         foreach ($_COOKIE as $id => $value) {
-            if($id > 0){
+            if ($id > 0) {
                 $flag = 1;
                 $Prod = unserialize($value);
                 echo '
@@ -188,8 +181,8 @@ class BicyclesController extends Controller
                           <img src="/tamplates/site/images/bikes/1.jpg" width="100%">
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                          <span class="cart-title">'.substr($Prod['title_product'], 0,18).'<a href="#" class="delete-from-cart" onclick="deleteFromCart('.$Prod['id_product'].');"><span aria-hidden="true"> × </span></a></span>
-                          <p><span class="cart-subtitle">'.substr($Prod['description'], 0,70).'</span></p>
+                          <span class="cart-title">'.substr($Prod['title_product'], 0, 18).'<a href="#" class="delete-from-cart" onclick="deleteFromCart('.$Prod['id_product'].');"><span aria-hidden="true"> × </span></a></span>
+                          <p><span class="cart-subtitle">'.substr($Prod['description'], 0, 70).'</span></p>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-6 quantity">
                           <span class="cart-title">Quantity</span>
@@ -214,35 +207,34 @@ class BicyclesController extends Controller
         }
     }
 
-    //Ajax: 
+    //Ajax:
     public function actionAddtodb()
     {
-       /* foreach ($_COOKIE as $id => $value) {
+        /* foreach ($_COOKIE as $id => $value) {
 
-            if($id>0){
-                $Prod = unserialize($value);
+             if($id>0){
+                 $Prod = unserialize($value);
 
-                $Prod['price'] = $Prod['counter'] * $Prod['price'];
+                 $Prod['price'] = $Prod['counter'] * $Prod['price'];
 
-                $Discount = Admin::getDiscount($Prod['id_product']);
-                if(isset($Discount['percent'])){
-                    $Prod['id_discount'] = $Discount['id_discount'];
-                }else{
-                    $Prod['id_discount'] = 0;
-                }
-                $Prod['status'] = 'not payed';
-                $Prod['id_user'] = 0;
-                //echo 'Продукт: '.$Prod['id_product'].'; '.$Prod['title_product'].'; '.$Prod['price'].'; Количество ('.$Prod['counter'].') ';
-                Admin::AddOrder($Prod);
-            }
-            setcookie($id,"test",time()-3600,"/");
-        }*/
+                 $Discount = Admin::getDiscount($Prod['id_product']);
+                 if(isset($Discount['percent'])){
+                     $Prod['id_discount'] = $Discount['id_discount'];
+                 }else{
+                     $Prod['id_discount'] = 0;
+                 }
+                 $Prod['status'] = 'not payed';
+                 $Prod['id_user'] = 0;
+                 //echo 'Продукт: '.$Prod['id_product'].'; '.$Prod['title_product'].'; '.$Prod['price'].'; Количество ('.$Prod['counter'].') ';
+                 Admin::AddOrder($Prod);
+             }
+             setcookie($id,"test",time()-3600,"/");
+         }*/
     }
 
     /*
     ********************************************************************
     *                  AJAX request processing(end)                    *
-    ******************************************************************** 
+    ********************************************************************
     */
-
 }

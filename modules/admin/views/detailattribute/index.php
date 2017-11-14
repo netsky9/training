@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id_category',
             [
                 'attribute' => 'id_category',
-                'value' => function($data){
+                'value' => function ($data) {
                     return $data->categories->title;
                 },
             ],

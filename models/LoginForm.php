@@ -61,7 +61,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            if($this->rememberMe){
+            if ($this->rememberMe) {
                 $u = $this->getUser();
                 $u->generateAuthKey();//рандомная строка для авторизации (метод в модели user)
                 $u->save();

@@ -16,36 +16,39 @@ $this->title = 'Bicycles';
     <div class="container">
       <h2><?= $ActiveCategory->title ?></h2>
       <div class="row">
-        <? foreach ($Bicycles as $Bic): ?>
+        <?php foreach ($Bicycles as $Bic): ?>
         <div class="col-md-4 col-sm-4 col-xs-12">
 
-          <? $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Bic['id_product']])->one(); 
-          if(isset($Img)) echo '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'">';
-          else  echo '<img class="bikes-img" src="/web/upload/store/no-image.jpg">';
+          <?php $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Bic['id_product']])->one();
+          if (isset($Img)) {
+              echo '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'">';
+          } else {
+              echo '<img class="bikes-img" src="/web/upload/store/no-image.jpg">';
+          }
           ?>
           
-          <? if($ActiveCategory->id_parent == 1): ?>
+          <?php if ($ActiveCategory->id_parent == 1): ?>
           <div class="row">
             <div class="col-md-5 col-sm-12 col-xs-5">
-              <a id="title-<?= $Bic['id_product'] ?>" href="<?= Url::to(['bicycles/view', 'id_product' => $Bic['id_product']]) ?>"><h3><?= BaseStringHelper::truncate($Bic['title_product'],13,'..') ?></h3></a>
+              <a id="title-<?= $Bic['id_product'] ?>" href="<?= Url::to(['bicycles/view', 'id_product' => $Bic['id_product']]) ?>"><h3><?= BaseStringHelper::truncate($Bic['title_product'], 13, '..') ?></h3></a>
               $<?= $Bic['price'] ?>
             </div>
             <div class="col-md-7 col-sm-12 col-xs-7">
               <div class="row">
                 <div class="col-md-7 col-sm-7 col-xs-7 popular-bikes-sel">
                   <select class="form-control selector"  data-idfirst="<?= $Bic['id_product'] ?>">
-                    <? foreach($Color as $Key => $Val){
-                        if($Key == $Bic['id_product']){
-                          foreach ($Val as $V) {
-                              if($V['id_product'] == $Bic['id_product']){ 
-                                  $Active = 'selected'; 
-                                }else{
-                                  $Active = '';
-                                }
-                              echo '<option '.$Active.' value="'.$V['id_product'].'">'.$V['value'].'</option>';
-                          }  
-                        }
-                    } ?>
+                    <?php foreach ($Color as $Key => $Val) {
+              if ($Key == $Bic['id_product']) {
+                  foreach ($Val as $V) {
+                      if ($V['id_product'] == $Bic['id_product']) {
+                          $Active = 'selected';
+                      } else {
+                          $Active = '';
+                      }
+                      echo '<option '.$Active.' value="'.$V['id_product'].'">'.$V['value'].'</option>';
+                  }
+              }
+          } ?>
                   </select>
                 </div>
                 <div class="col-md-5 col-sm-5 col-xs-5">
@@ -54,12 +57,12 @@ $this->title = 'Bicycles';
               </div>
             </div>    
           </div>
-        <? endif ?>
+        <?php endif ?>
 
-        <? if($ActiveCategory->id_parent != 1): ?>
+        <?php if ($ActiveCategory->id_parent != 1): ?>
           <div class="row">
             <div class="col-md-9 col-sm-12 col-xs-9">
-              <a id="title-<?= $Bic['id_product'] ?>" href="<?= Url::to(['bicycles/view', 'id_product' => $Bic['id_product']]) ?>"><h3><?= BaseStringHelper::truncate($Bic['title_product'],13,'..') ?></h3></a>
+              <a id="title-<?= $Bic['id_product'] ?>" href="<?= Url::to(['bicycles/view', 'id_product' => $Bic['id_product']]) ?>"><h3><?= BaseStringHelper::truncate($Bic['title_product'], 13, '..') ?></h3></a>
               $<?= $Bic['price'] ?>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-3">
@@ -70,15 +73,15 @@ $this->title = 'Bicycles';
               </div>
             </div>    
           </div>
-        <? endif ?>
+        <?php endif ?>
 
 
         </div>
-        <? endforeach ?>
+        <?php endforeach ?>
         <!--****** Pagination ******-->
         <div class="super-slim-container">
           <!-- maxButtonCount - количество видимых кнопок -->
-          <? echo LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 5]); ?>
+          <?php echo LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 5]); ?>
           </ul>
         </div>
 

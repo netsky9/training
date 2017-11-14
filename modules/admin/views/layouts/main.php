@@ -4,7 +4,7 @@ use app\modules\admin\assets\AppAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-//подключаем AppAsset 
+//подключаем AppAsset
 AppAsset::register($this);
 ?>
 <!doctype html>

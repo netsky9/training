@@ -20,21 +20,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_order',
             [
                 'attribute' => 'id_product',
-                'value' => function ($data){
+                'value' => function ($data) {
                     return '<a href="/bicycles/view?id_product='.$data->products->id_product.'">'.$data->products->title_product.'</a>';
                 },
                 'format' => 'html',
             ],
             [
                 'attribute' => 'buyer',
-                'value' => function ($data){
+                'value' => function ($data) {
                     return $data->buyers->name.' '.$data->buyers->last_name;
                 },
                 'format' => 'html',
             ],
             [
                 'attribute' => 'buyer contacts',
-                'value' => function ($data){
+                'value' => function ($data) {
                     return 'phone: '.$data->buyers->phone.' email: '.$data->buyers->email;
                 },
                 'format' => 'html',

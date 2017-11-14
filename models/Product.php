@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+
 use yii\db\ActiveRecord;
 use Yii;
 
@@ -26,7 +27,7 @@ class Product extends ActiveRecord
 
     public static function getProductsByCategory($pages_offset, $pages_limit, $category)
     {
-    	$bikes = '
+        $bikes = '
             SELECT products.*
             FROM products
             WHERE id_category = :id_category
@@ -40,12 +41,12 @@ class Product extends ActiveRecord
 
     /**
     * Get Colors
-    * @param $Bicycles <p>array of all Bicecles on page </p> 
+    * @param $Bicycles <p>array of all Bicecles on page </p>
     * @return $Color <p>Array of colors for every Bicycle</p>
     */
     public static function getColorsForProduct($Bicycles)
     {
-    	$query = 'SELECT * 
+        $query = 'SELECT * 
             FROM detail_value
             WHERE title = :title AND id_detail_attribute = (SELECT id_detail_attribute FROM detail_attribute WHERE title = "Color")
             GROUP BY value';
@@ -61,7 +62,7 @@ class Product extends ActiveRecord
 
     public static function getPopularProduct()
     {
-    	$query = 'SELECT orders.*, COUNT(orders.id_product) as count_order, products.*
+        $query = 'SELECT orders.*, COUNT(orders.id_product) as count_order, products.*
                   FROM orders
                   INNER JOIN products ON orders.id_product = products.id_product
                   GROUP BY orders.id_product
@@ -72,5 +73,4 @@ class Product extends ActiveRecord
 
         return $Product;
     }
-
 }

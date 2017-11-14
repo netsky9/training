@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_order',
             [
                 'attribute' => 'id_product',
-                'value' => function ($data){
+                'value' => function ($data) {
                     return '<a href="/bicycles/view?id_product='.$data->products->id_product.'">'.$data->products->title_product.'</a>';
                 },
                 'format' => 'html',
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id_user',
             [
                 'attribute' => 'id_user',
-                'value' => function ($data){
+                'value' => function ($data) {
                     return '<a href="/admin/buyers/view?id='.$data->buyers->id_user.'">'.$data->buyers->name.'</a>';
                 },
                 'format' => 'html',

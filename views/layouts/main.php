@@ -4,7 +4,7 @@ use app\assets\AppAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-//подключаем AppAsset 
+//подключаем AppAsset
 AppAsset::register($this);
 ?>
 
@@ -37,7 +37,7 @@ AppAsset::register($this);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="<? echo '/' ?>">
+                  <a class="navbar-brand" href="<?php echo '/' ?>">
                     <img alt="Brand" class="logo" src="/images/logo.png" width="100" height="31">
                   </a>
                 </div>
@@ -48,14 +48,13 @@ AppAsset::register($this);
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">BICYCLES</a>
                       <ul class="dropdown-menu">
-                        <?
-                          if(isset($this->context->menuCatBicycle) && $this->context->menuCatBicycle != null)
-                          {
-                            foreach ($this->context->menuCatBicycle as $CatBicycle){
-                              echo '
+                        <?php
+                          if (isset($this->context->menuCatBicycle) && $this->context->menuCatBicycle != null) {
+                              foreach ($this->context->menuCatBicycle as $CatBicycle) {
+                                  echo '
                                 <li><a href="'. Url::to(['bicycles/index', 'category' => $CatBicycle['id_category']]) .'" id="menu-item">'.$CatBicycle['title'].'</a></li>
                               ';
-                            }
+                              }
                           }
                         ?>
                       </ul>
@@ -63,14 +62,13 @@ AppAsset::register($this);
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">PARTS</a>
                       <ul class="dropdown-menu">
-                        <?
-                          if(isset($this->context->menuCatParts) && $this->context->menuCatParts != null)
-                          {
-                            foreach ($this->context->menuCatParts as $CatParts){
-                              echo '
+                        <?php
+                          if (isset($this->context->menuCatParts) && $this->context->menuCatParts != null) {
+                              foreach ($this->context->menuCatParts as $CatParts) {
+                                  echo '
                                 <li><a href="'. Url::to(['bicycles/index', 'category' => $CatParts['id_category']]) .'" id="menu-item">'.$CatParts['title'].'</a></li>
                               ';
-                            }
+                              }
                           }
                         ?>
                       </ul>
@@ -78,30 +76,28 @@ AppAsset::register($this);
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">ACCESSORIES</a>
                       <ul class="dropdown-menu">
-                        <?
-                          if(isset($this->context->menuCatAccessories) && $this->context->menuCatAccessories != null)
-                          {
-                            foreach ($this->context->menuCatAccessories as $CatAccessories){
-                              echo '
+                        <?php
+                          if (isset($this->context->menuCatAccessories) && $this->context->menuCatAccessories != null) {
+                              foreach ($this->context->menuCatAccessories as $CatAccessories) {
+                                  echo '
                                 <li><a href="'. Url::to(['bicycles/index', 'category' => $CatAccessories['id_category']]) .'" id="menu-item">'.$CatAccessories['title'].'</a></li>
                               ';
-                            }
+                              }
                           }
                         ?>
                       </ul>
                     </li>
                     <li><a href="<?= '/extras' ?>" id="menu-item">EXTRAS</a></li>
                     <li><a href="#" id="basket" data-toggle="modal" data-target="#myModal">
-                      <?
+                      <?php
                       //количество товаров в корзине
-                      if(!isset($_COOKIE['count_product'])){
+                      if (!isset($_COOKIE['count_product'])) {
                           $count = 0;
-                          setcookie('count_product',$count, strtotime( '+30 days' ));
-                          
-                      }else{
-                          if($_COOKIE['count_product'] > 0){
-                            echo '<span class="counter-product" style="margin-left: 25px;">'.$_COOKIE['count_product'].'</span>';
-                            //$Count = $_COOKIE['count_product'];
+                          setcookie('count_product', $count, strtotime('+30 days'));
+                      } else {
+                          if ($_COOKIE['count_product'] > 0) {
+                              echo '<span class="counter-product" style="margin-left: 25px;">'.$_COOKIE['count_product'].'</span>';
+                              //$Count = $_COOKIE['count_product'];
                           }
                       }
                       ?>
@@ -211,14 +207,13 @@ AppAsset::register($this);
                     <li class="dropdown dropup">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">BICYCLES</a>
                       <ul class="dropdown-menu" id="footer-nav-ul">
-                        <?
-                          if(isset($this->context->menuCatBicycle) && $this->context->menuCatBicycle != null)
-                          {
-                            foreach ($this->context->menuCatBicycle as $CatBicycle){
-                              echo '
+                        <?php
+                          if (isset($this->context->menuCatBicycle) && $this->context->menuCatBicycle != null) {
+                              foreach ($this->context->menuCatBicycle as $CatBicycle) {
+                                  echo '
                                 <li><a href="'. Url::to(['bicycles/index', 'category' => $CatBicycle['id_category']]) .'" id="menu-item">'.$CatBicycle['title'].'</a></li>
                               ';
-                            }
+                              }
                           }
                         ?>
                       </ul>
@@ -226,14 +221,13 @@ AppAsset::register($this);
                     <li class="dropdown dropup">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">parts</a>
                       <ul class="dropdown-menu" id="footer-nav-ul">
-                        <?
-                          if(isset($this->context->menuCatParts) && $this->context->menuCatParts != null)
-                          {
-                            foreach ($this->context->menuCatParts as $CatParts){
-                              echo '
+                        <?php
+                          if (isset($this->context->menuCatParts) && $this->context->menuCatParts != null) {
+                              foreach ($this->context->menuCatParts as $CatParts) {
+                                  echo '
                                 <li><a href="'. Url::to(['bicycles/index', 'category' => $CatParts['id_category']]) .'" id="menu-item">'.$CatParts['title'].'</a></li>
                               ';
-                            }
+                              }
                           }
                         ?>
                       </ul>
@@ -241,14 +235,13 @@ AppAsset::register($this);
                     <li class="dropdown dropup">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item">ACCESSORIES</a>
                       <ul class="dropdown-menu" id="footer-nav-ul">
-                        <?
-                          if(isset($this->context->menuCatAccessories) && $this->context->menuCatAccessories != null)
-                          {
-                            foreach ($this->context->menuCatAccessories as $CatAccessories){
-                              echo '
+                        <?php
+                          if (isset($this->context->menuCatAccessories) && $this->context->menuCatAccessories != null) {
+                              foreach ($this->context->menuCatAccessories as $CatAccessories) {
+                                  echo '
                                 <li><a href="'. Url::to(['bicycles/index', 'category' => $CatAccessories['id_category']]) .'" id="menu-item">'.$CatAccessories['title'].'</a></li>
                               ';
-                            }
+                              }
                           }
                         ?>
                       </ul>

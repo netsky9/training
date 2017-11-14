@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_product',
             [
                 'attribute' => 'Image',
-                'value' => function($data){
+                'value' => function ($data) {
                     $img = $data->getImage();
                     return "<img src='{$img->getUrl('100x')}'>";
                 },
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'title_product',
             [
                 'attribute' => 'title_product',
-                'value' => function($data){
+                'value' => function ($data) {
                     return '<a href="/bicycles/view?id_product='.$data->id_product.'">'.$data->title_product.'</a>';
                 },
                 'format' => 'html',
@@ -45,10 +45,16 @@ $this->params['breadcrumbs'][] = $this->title;
             //'rent_sale',
             [
                 'attribute' => 'rent_sale',
-                'value' => function($data){
-                    if($data->rent_sale == 0) return 'sale';
-                    if($data->rent_sale == 1) return 'rent';
-                    if($data->rent_sale == 2) return 'rent + sale';
+                'value' => function ($data) {
+                    if ($data->rent_sale == 0) {
+                        return 'sale';
+                    }
+                    if ($data->rent_sale == 1) {
+                        return 'rent';
+                    }
+                    if ($data->rent_sale == 2) {
+                        return 'rent + sale';
+                    }
                 },
             ],
             //'count',

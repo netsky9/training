@@ -40,7 +40,7 @@ class Orders extends \yii\db\ActiveRecord
     /*public function getProductsById($id)
     {
         return $this->find();
-    } */   
+    } */
 
     /**
      * @inheritdoc
@@ -71,5 +71,4 @@ class Orders extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
-
 }

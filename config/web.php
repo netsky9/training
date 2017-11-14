@@ -70,6 +70,10 @@ $config = [
             'rules' => [
             ],
         ],
+        //роли пользователей
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         
     ],
     'params' => $params,

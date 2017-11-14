@@ -17,9 +17,12 @@ $this->title = $Product->title_product;
       <h2><?= $Product->title_product ?></h2>
       <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-12">
-          <? $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Product->id_product])->one(); 
-          if(isset($Img)) echo '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'">';
-          else  echo '<img class="bikes-img" src="/web/upload/store/no-image.jpg">';
+          <?php $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Product->id_product])->one();
+          if (isset($Img)) {
+              echo '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'">';
+          } else {
+              echo '<img class="bikes-img" src="/web/upload/store/no-image.jpg">';
+          }
           ?>
         </div>
         <div class="col-md-8 col-sm-6 col-xs-12">
@@ -38,7 +41,7 @@ $this->title = $Product->title_product;
             </div>
           </div>
 
-          <? foreach ($Details as $Det): ?>
+          <?php foreach ($Details as $Det): ?>
           <div class="row">
             <div class="col-md-6">
               <p class="detail-back"><?= $Det['title']; ?></p>
@@ -47,7 +50,7 @@ $this->title = $Product->title_product;
               <p class="detail-back"><?= $Det['value']; ?></p>
             </div>     
           </div>
-          <? endforeach ?>
+          <?php endforeach ?>
 
           <?= $Product->description ?>
 

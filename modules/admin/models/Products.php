@@ -1,8 +1,10 @@
 <?php
 
 namespace app\modules\admin\models;
+
 use yii\web\Controller;
 use Yii;
+
 /**
  * This is the model class for table "products".
  *
@@ -81,15 +83,16 @@ class Products extends \yii\db\ActiveRecord
     }
 
     //Image
-    public function upload(){
-        if($this->validate()){
+    public function upload()
+    {
+        if ($this->validate()) {
             $path = 'upload/store/' . $this->image->baseName . '.' . $this->image->extension;
             $this->image->saveAs($path);
             $this->removeImages();
             $this->attachImage($path);
             @unlink($path);
             return true;
-        }else{
+        } else {
             return false;
         }
     }

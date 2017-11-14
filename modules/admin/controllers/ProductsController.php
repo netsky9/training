@@ -91,7 +91,7 @@ class ProductsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->image = UploadedFile::getInstance($model, 'image');
-            if($model->image){
+            if ($model->image) {
                 $model->upload();
             }
 
@@ -132,5 +132,4 @@ class ProductsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 }
