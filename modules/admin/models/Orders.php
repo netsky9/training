@@ -31,9 +31,9 @@ class Orders extends \yii\db\ActiveRecord
         return $this->hasOne(Products::className(), ['id_product' => 'id_product']);
     }
 
-    public function getBuyers()
+    public function getUsers()
     {
-        return $this->hasOne(Buyers::className(), ['id_user' => 'id_user']);
+        return $this->hasOne(Users::className(), ['id_user' => 'id_user']);
     }
 
 

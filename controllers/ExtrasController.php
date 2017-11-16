@@ -8,6 +8,8 @@ use app\models\Category;
 use app\models\Details;
 use Yii;
 
+use yii\data\Pagination;
+
 class ExtrasController extends Controller
 {
     //Create public virable for print categories in layout
@@ -29,6 +31,15 @@ class ExtrasController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('main');
+        //считаем количество всех записей по данной категории
+        $Bicycles_count = Product::find()->where('rent_sale > 0');
+
+
+        //создаем объект класса Pagination и передаем ему количество записей и количество, которое нужно выводить на одной странице
+        $pages = new Pagination(['totalCount' => $Bicycles_count->count(), 'pageSize' => 6, 'forcePageParam' => false, 'pageSizeParam' => false]);
+
+        $Bicycles = Product::getRentProductsByCategory($pages->offset, $pages->limit);
+
+        return $this->render('main', compact('Bicycles', 'pages'));
     }
 }

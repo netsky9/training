@@ -3,6 +3,10 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use yii\helpers\BaseStringHelper;
+use yii\widgets\LinkPager;
+use yii\helpers\Url;
+use app\models\Image;
 
 $this->title = 'Extras';
 $this->params['breadcrumbs'][] = $this->title;
@@ -27,9 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
       <div class="container">
         <h2>Choose a Bike That Meets Your Needs</h2>
         <div class="row">
-
+          <? foreach ($Bicycles as $Bic): ?>
           <div class="col-md-4 col-sm-4 col-xs-12">
-            <img class="bikes-img" src="/images/bikes/1.jpg">
+            <?php $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Bic['id_product']])->one();
+              if (isset($Img)) {
+                  echo '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'">';
+              } else {
+                  echo '<img class="bikes-img" src="/web/upload/store/no-image.jpg">';
+              }
+            ?>
             <div class="row rate-price">
               <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="rate-time">
@@ -58,89 +68,14 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="row">
               <div class="col-md-7 col-sm-12 col-xs-5">
-                <h3>Fixed gear</h3>
+                <a id="title-<?= $Bic['id_product'] ?>" href="<?= Url::to(['bicycles/view', 'id_product' => $Bic['id_product']]) ?>"><h3><?= BaseStringHelper::truncate($Bic['title_product'], 40, '..') ?></h3></a>
               </div>
               <div class="col-md-5 col-sm-12 col-xs-7">
-                <button class="btn-grey" data-toggle="modal" data-target="#rent-1">RENT</button>
+                <button class="btn-grey" data-toggle="modal" data-target="#rent-1" onclick="rent(<?= $Bic['id_product'] ?>)">RENT</button>
               </div>    
             </div>
           </div>
-
-          <div class="col-md-4 col-sm-4 col-xs-12">
-            <img class="bikes-img" src="/images/bikes/2.jpg">
-            <div class="row rate-price">
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  1 hour
-                  <span class="rate-money">$12.0</span>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  6 hour
-                  <span class="rate-money">$65.0</span>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  12 hour
-                  <span class="rate-money">$100.0</span>
-                </div>  
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  1 week
-                  <span class="rate-money">$250.0</span>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-7 col-sm-12 col-xs-5">
-                <h3>Big boy ultra</h3>
-              </div>
-              <div class="col-md-5 col-sm-12 col-xs-7">
-                <button class="btn-grey">RENT</button>
-              </div>    
-            </div>
-          </div>
-
-          <div class="col-md-4 col-sm-4 col-xs-12">
-            <img class="bikes-img" src="/images/bikes/3.jpg">
-            <div class="row rate-price">
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  1 hour
-                  <span class="rate-money">$12.0</span>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  6 hour
-                  <span class="rate-money">$65.0</span>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  12 hour
-                  <span class="rate-money">$100.0</span>
-                </div>  
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-6">
-                <div class="rate-time">
-                  1 week
-                  <span class="rate-money">$250.0</span>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-7 col-sm-12 col-xs-5">
-                <h3>Sanchaez</h3>
-              </div>
-              <div class="col-md-5 col-sm-12 col-xs-7">
-                <button class="btn-grey">RENT</button>
-              </div>    
-            </div>
-          </div>
+          <? endforeach ?>
 
         </div>
       </div>
@@ -154,10 +89,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <form>
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Rent FIXED GEAR</h4>
+            <h4 class="modal-title" id="rentLabel">Rent Bicycle №<span id="id_rent_product"></span></h4>
             <span class="cart-subtitle">Fill out the form to contact us </span>
           </div>
-          <div class="modal-body">
+          <div style="padding: 15px;">
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   The beginning of the rent:
@@ -182,25 +117,25 @@ $this->params['breadcrumbs'][] = $this->title;
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control contact-input" placeholder="Name" pattern="[A-Za-z]{3,}" required>
+                  <input type="text" class="form-control contact-input" placeholder="Name" pattern="[A-Za-z]{3,}" id="rent-name" required>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control contact-input" placeholder="Surname" pattern="[A-Za-z]{3,}" required>
+                  <input type="text" class="form-control contact-input" placeholder="Surname" pattern="[A-Za-z]{3,}" id="rent-surname" required>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control contact-input" placeholder="Phone number" pattern="{7}" required>
+                  <input type="text" class="form-control contact-input" placeholder="Phone number" pattern="{7}" id="rent-phone" required>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="email" class="form-control contact-input" placeholder="Email" required>
+                  <input type="email" class="form-control contact-input" placeholder="Email" id="rent-email" required>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                  <textarea class="form-control contact-input mess-placehold" placeholder="Message.."></textarea>
+                  <textarea class="form-control contact-input mess-placehold" placeholder="Message.." id="rent-message"></textarea>
                 </div>
               </div>
           </div>
           <!--****** Modal footer ******-->
           <div class="modal-footer modal-rent">
-            <button class="btn-black">SEND</button>
+            <button class="btn-black" onclick="rentAddToDb()">SEND</button>
           </div>
         </form>
       </div>

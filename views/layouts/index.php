@@ -120,11 +120,10 @@ AppAsset::register($this);
                   } else {
                       if ($_COOKIE['count_product'] > 0) {
                           echo '<span class="counter-product" style="margin-left: 25px;">'.$_COOKIE['count_product'].'</span>';
-                          //$Count = $_COOKIE['count_product'];
                       }
                   }
                   ?>
-                  
+                  <span class="counter-product" style="margin-left: 25px;"></span>
                   </a>
                 </li>
               </ul>
@@ -159,6 +158,29 @@ AppAsset::register($this);
 
           <!--****** There output AJAX products ******-->
           
+        </div>
+
+        <? if (!isset($_COOKIE['count_product']) || $_COOKIE['count_product'] <= 0){$visEmpty = 'display:inherit;';} else {$visEmpty = 'display:none;';} ?>
+          <p class="empty-cart" style="<? echo $visEmpty; ?>">The cart is empty</p>
+
+        <? if (isset($_COOKIE['count_product']) && $_COOKIE['count_product'] > 0){$visForm = 'display:inherit;';} else {$visForm = 'display:none;';}?>
+        <div class="form-cart" style="<? echo $visForm; ?>">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" class="form-control contact-input" id="cartInputName" placeholder="NAME" pattern="[A-Za-z]{3,}" required>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" class="form-control contact-input" id="cartInputSurname" placeholder="SURNAME" pattern="[A-Za-z]{3,}" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="email" class="form-control contact-input" id="cartInputEmail" placeholder="EMAIL" required>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" class="form-control contact-input" id="cartInputPhone" placeholder="PHONE" required>
+            </div>
+          </div>
         </div>
         <!--****** Modal footer ******-->
         <div class="modal-footer">
@@ -284,10 +306,10 @@ AppAsset::register($this);
   <!--*************************** END Footer ***************************--> 
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="bootstrap/js/bootstrap.min.js"></script>
-
+  <script src="js/validation-forms.js"></script>
   <!-- Hidden static text -->
   <script type="text/javascript">
     var flag = 0;
@@ -423,6 +445,8 @@ AppAsset::register($this);
               getCart();
               alert('The product was a deleted from cart!');
               if(Number(data) == 0){
+                $('.form-cart').hide();
+                $('.empty-cart').show();
                 $('.counter-product').text('');
               }else{
                 $('.counter-product').text(data);
@@ -445,6 +469,10 @@ AppAsset::register($this);
             success:function(data){
               if(data != 'is_exist'){
                 $('.counter-product').text(data);
+                //показываем форму для пользователя
+                $('.form-cart').show();
+                //скрываем "корзина пуста"
+                $('.empty-cart').hide();
                 alert('The product was added to the cart!');
               }else{
                 alert('You are is already added product in the cart!');
@@ -457,17 +485,19 @@ AppAsset::register($this);
           getCart();
         });
 
+      //оформление заказа
       $('.checkout').click(function(){
+        var name = $('#cartInputName').val();
+        var surname = $('#cartInputSurname').val();
+        var email = $('#cartInputEmail').val();
+        var phone = $('#cartInputPhone').val();
         $.ajax({
             type: "GET",
             url: "/bicycles/addtodb",
+            data: {'name' : name, 'surname' : surname,'email' : email,'phone' : phone},
             response:'html',
             success:function(data){
               alert('Your order will be processed soon!');
-              //getCart();
-              
-              //$('.counter-product').text(data);
-              //alert('Товар был успешно добавлен в корзину!');
             }
           });
       });

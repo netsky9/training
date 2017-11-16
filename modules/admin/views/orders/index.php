@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id_user',
                 'value' => function ($data) {
-                    return '<a href="/admin/buyers/view?id='.$data->buyers->id_user.'">'.$data->buyers->name.'</a>';
+                    return '<a href="/admin/users/view?id='.$data->users->id_user.'">'.$data->users->name.'</a>';
                 },
                 'format' => 'html',
             ],

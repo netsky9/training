@@ -55,7 +55,7 @@ AppAsset::register($this);
                 <li>
                     <a href="<?= Url::to('/admin/categories'); ?>">
                         <i class="pe-7s-menu"></i>
-                        <p>Categories</p>
+                        <p>Products Categories</p>
                     </a>
                 </li>
                 <li>
@@ -65,9 +65,21 @@ AppAsset::register($this);
                     </a>
                 </li>
                 <li>
-                    <a href="<?= Url::to('/admin/buyers'); ?>">
+                    <a href="<?= Url::to('/admin/discounts'); ?>">
+                        <i class="pe-7s-piggy"></i>
+                        <p>Products Discounts</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= Url::to('/admin/users'); ?>">
+                        <i class="pe-7s-users"></i>
+                        <p>Users</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= Url::to('/admin/rent'); ?>">
                         <i class="pe-7s-id"></i>
-                        <p>Buyers</p>
+                        <p>Rent</p>
                     </a>
                 </li>
             </ul>

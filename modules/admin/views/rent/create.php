@@ -2,14 +2,15 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\Buyers */
 
-$this->title = 'Create Buyers';
-$this->params['breadcrumbs'][] = ['label' => 'Buyers', 'url' => ['index']];
+/* @var $this yii\web\View */
+/* @var $model app\modules\admin\models\Rent */
+
+$this->title = 'Create Rent';
+$this->params['breadcrumbs'][] = ['label' => 'Rents', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="buyers-create">
+<div class="rent-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

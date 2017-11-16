@@ -38,17 +38,17 @@ $this->title = 'Bicycles';
                 <div class="col-md-7 col-sm-7 col-xs-7 popular-bikes-sel">
                   <select class="form-control selector"  data-idfirst="<?= $Bic['id_product'] ?>">
                     <?php foreach ($Color as $Key => $Val) {
-              if ($Key == $Bic['id_product']) {
-                  foreach ($Val as $V) {
-                      if ($V['id_product'] == $Bic['id_product']) {
-                          $Active = 'selected';
-                      } else {
-                          $Active = '';
+                      if ($Key == $Bic['id_product']) {
+                          foreach ($Val as $V) {
+                              if ($V['id_product'] == $Bic['id_product']) {
+                                  $Active = 'selected';
+                              } else {
+                                  $Active = '';
+                              }
+                              echo '<option '.$Active.' value="'.$V['id_product'].'">'.$V['value'].'</option>';
+                          }
                       }
-                      echo '<option '.$Active.' value="'.$V['id_product'].'">'.$V['value'].'</option>';
-                  }
-              }
-          } ?>
+                  } ?>
                   </select>
                 </div>
                 <div class="col-md-5 col-sm-5 col-xs-5">

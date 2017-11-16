@@ -3,18 +3,16 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\modules\admin\models\Orders;
-use app\modules\admin\models\Products;
+use app\modules\admin\models\Rent;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * OrdersController implements the CRUD actions for Orders model.
+ * RentController implements the CRUD actions for Rent model.
  */
-class OrdersController extends Controller
+class RentController extends Controller
 {
     /**
      * @inheritdoc
@@ -22,18 +20,6 @@ class OrdersController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                //правила. вход разрешен только для админа, если пользователь пытается зайти, ему вылетит forbidden
-                //правила нужно прописывать перед каждым контроллером и указывать actions
-                'rules' => [
-                    [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'model'],
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -44,21 +30,13 @@ class OrdersController extends Controller
     }
 
     /**
-     * Lists all Orders models.
+     * Lists all Rent models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Orders::find(),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'status' => SORT_ASC,
-                ]
-            ],
+            'query' => Rent::find(),
         ]);
 
         return $this->render('index', [
@@ -67,7 +45,7 @@ class OrdersController extends Controller
     }
 
     /**
-     * Displays a single Orders model.
+     * Displays a single Rent model.
      * @param integer $id
      * @return mixed
      */
@@ -79,16 +57,16 @@ class OrdersController extends Controller
     }
 
     /**
-     * Creates a new Orders model.
+     * Creates a new Rent model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Orders();
+        $model = new Rent();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_order]);
+            return $this->redirect(['view', 'id' => $model->id_rent]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -97,7 +75,7 @@ class OrdersController extends Controller
     }
 
     /**
-     * Updates an existing Orders model.
+     * Updates an existing Rent model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -107,7 +85,7 @@ class OrdersController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_order]);
+            return $this->redirect(['view', 'id' => $model->id_rent]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -116,7 +94,7 @@ class OrdersController extends Controller
     }
 
     /**
-     * Deletes an existing Orders model.
+     * Deletes an existing Rent model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -129,15 +107,15 @@ class OrdersController extends Controller
     }
 
     /**
-     * Finds the Orders model based on its primary key value.
+     * Finds the Rent model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Orders the loaded model
+     * @return Rent the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Orders::findOne($id)) !== null) {
+        if (($model = Rent::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -39,6 +39,20 @@ class Product extends ActiveRecord
         return $Bicycles;
     }
 
+    public static function getRentProductsByCategory($pages_offset, $pages_limit)
+    {
+        $bikes = '
+            SELECT products.*
+            FROM products
+            WHERE rent_sale > 0
+            GROUP BY title_product
+            LIMIT :offset, :limit';
+
+        $Bicycles = Yii::$app->db->createCommand($bikes, [':offset' => $pages_offset, ':limit' => $pages_limit])->queryAll();
+
+        return $Bicycles;
+    }
+
     /**
     * Get Colors
     * @param $Bicycles <p>array of all Bicecles on page </p>

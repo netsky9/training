@@ -829,3 +829,8 @@ a:hover{
     margin-top: -30px;
     margin-bottom: 40px;
 }
+
+.empty-cart{
+   padding-top: 27px;
+   text-align: center;
+}

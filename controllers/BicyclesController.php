@@ -6,7 +6,11 @@ use yii\web\Controller;
 use app\models\Product;
 use app\models\Category;
 use app\models\Details;
+use app\models\Image;
+use app\models\User;
 use Yii;
+
+use app\modules\admin\models\Orders;
 
 use yii\data\Pagination;
 
@@ -29,12 +33,12 @@ class BicyclesController extends Controller
         parent::__construct($id, $module, $config);
     }
 
+
     /**
      * Displays Products page.
      */
     public function actionIndex($category)
     {
-
         //считаем количество всех записей по данной категории
         $Bicycles_count = Product::find()->where('id_category = :id_category', [':id_category'=>$category]);
 
@@ -96,7 +100,7 @@ class BicyclesController extends Controller
                         $CountUpdate = $_COOKIE['count_product'];
 
                         //return count products in the cart
-                        echo $CountUpdate;
+                        echo $CountUpdate-1;
                     }
                 }
             }
@@ -175,10 +179,16 @@ class BicyclesController extends Controller
             if ($id > 0) {
                 $flag = 1;
                 $Prod = unserialize($value);
+                $Img = Image::find()->where('itemId = :itemId', [':itemId' => $Prod['id_product']])->one();
+                if (isset($Img)) {
+                    $Image = '<img class="bikes-img" src="/web/upload/store/'.$Img->filePath.'" style="padding: 0;">';
+                } else {
+                    $Image = '<img class="bikes-img" src="/web/upload/store/no-image.jpg" style="padding: 0;">';
+                }
                 echo '
                     <div class="row cart-item">
                         <div class="col-md-3 col-sm-3 col-xs-12">
-                          <img src="/tamplates/site/images/bikes/1.jpg" width="100%">
+                          '.$Image.'
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-12">
                           <span class="cart-title">'.substr($Prod['title_product'], 0, 18).'<a href="#" class="delete-from-cart" onclick="deleteFromCart('.$Prod['id_product'].');"><span aria-hidden="true"> × </span></a></span>
@@ -202,34 +212,74 @@ class BicyclesController extends Controller
                           <br>$<span class="price-text '.$Prod['price'].'">'.$Prod['price'].'</span>
                         </div>
                       </div>
+                      
                 ';
             }
         }
     }
 
+    public function generateRandomStr($countStr = 10){
+      $str = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+      for($i = 0; $i < $countStr; $i++){
+        $newPass .= $str[rand(0, strlen($str))];
+      }
+      return $newPass; 
+    }
+
     //Ajax:
     public function actionAddtodb()
     {
-        /* foreach ($_COOKIE as $id => $value) {
+      //сначала добавляем пользователя
+      if(isset($_GET['name']) && isset($_GET['surname']) && isset($_GET['email']) && isset($_GET['phone']) ){
+          $user['name'] = $_GET['name'];
+          $user['surname'] = $_GET['surname'];
+          $user['email'] = $_GET['email'];
+          $user['phone'] = $_GET['phone'];
 
-             if($id>0){
-                 $Prod = unserialize($value);
+          //возможна нужна проверка на существование такого пользователя, хотя вероятность очеьн мала
+          $user['login'] = $user['name'].$this->generateRandomStr(5);
 
-                 $Prod['price'] = $Prod['counter'] * $Prod['price'];
+          $user['pass'] = $this->generateRandomStr();
 
-                 $Discount = Admin::getDiscount($Prod['id_product']);
-                 if(isset($Discount['percent'])){
-                     $Prod['id_discount'] = $Discount['id_discount'];
-                 }else{
-                     $Prod['id_discount'] = 0;
-                 }
-                 $Prod['status'] = 'not payed';
-                 $Prod['id_user'] = 0;
-                 //echo 'Продукт: '.$Prod['id_product'].'; '.$Prod['title_product'].'; '.$Prod['price'].'; Количество ('.$Prod['counter'].') ';
-                 Admin::AddOrder($Prod);
+          $model = new User;
+          $model->username = $user['login'];
+          $model->password = Yii::$app->security->generatePasswordHash($user['pass']);
+          $model->name = $user['name'];
+          $model->last_name = $user['surname'];
+          $model->phone = $user['phone'];
+          $model->email = $user['email'];
+
+          $model->insert();
+
+          $addedUser = User::find()->where('username = :username', [':username' => $user['login']])->one();
+          //назначаем роль новому пользователю
+          $userRole = Yii::$app->authManager->getRole('user');
+          Yii::$app->authManager->assign($userRole, $addedUser->id_user);
+
+          //echo 'Your new login is: '.$user['login'].' and password: '.$user['pass'];
+
+        }
+        foreach ($_COOKIE as $id => $value) {
+
+             if($id > 0){
+                $Prod = unserialize($value);
+                //var_dump($Prod);
+
+                $modelProd = new Orders;
+
+                $modelProd->id_product = $Prod['id_product'];
+                $modelProd->id_user = $addedUser->id_user;
+                $modelProd->datetime = date('Y-m-d H:m:s');
+                $modelProd->count = $Prod['counter'];
+                $modelProd->sum = $Prod['counter'] * $Prod['price'];
+                $modelProd->id_discount = 0;
+                $modelProd->status = 'not payed';
+                $modelProd->insert();  
              }
-             setcookie($id,"test",time()-3600,"/");
-         }*/
+             
+            setcookie($id,"test",strtotime('-60 days'),"/");
+        }
+
     }
 
     /*

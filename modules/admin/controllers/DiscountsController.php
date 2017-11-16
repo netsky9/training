@@ -3,16 +3,16 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\modules\admin\models\Buyers;
+use app\modules\admin\models\Discounts;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BuyersController implements the CRUD actions for Buyers model.
+ * DiscountsController implements the CRUD actions for Discounts model.
  */
-class BuyersController extends Controller
+class DiscountsController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,13 +30,13 @@ class BuyersController extends Controller
     }
 
     /**
-     * Lists all Buyers models.
+     * Lists all Discounts models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Buyers::find(),
+            'query' => Discounts::find(),
         ]);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class BuyersController extends Controller
     }
 
     /**
-     * Displays a single Buyers model.
+     * Displays a single Discounts model.
      * @param integer $id
      * @return mixed
      */
@@ -57,16 +57,16 @@ class BuyersController extends Controller
     }
 
     /**
-     * Creates a new Buyers model.
+     * Creates a new Discounts model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Buyers();
+        $model = new Discounts();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_user]);
+            return $this->redirect(['view', 'id' => $model->id_discount]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -75,7 +75,7 @@ class BuyersController extends Controller
     }
 
     /**
-     * Updates an existing Buyers model.
+     * Updates an existing Discounts model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,7 +85,7 @@ class BuyersController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_user]);
+            return $this->redirect(['view', 'id' => $model->id_discount]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -94,7 +94,7 @@ class BuyersController extends Controller
     }
 
     /**
-     * Deletes an existing Buyers model.
+     * Deletes an existing Discounts model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +107,15 @@ class BuyersController extends Controller
     }
 
     /**
-     * Finds the Buyers model based on its primary key value.
+     * Finds the Discounts model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Buyers the loaded model
+     * @return Discounts the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Buyers::findOne($id)) !== null) {
+        if (($model = Discounts::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
