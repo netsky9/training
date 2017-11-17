@@ -93,7 +93,7 @@ AppAsset::register($this);
                       //количество товаров в корзине
                       if (!isset($_COOKIE['count_product'])) {
                           $count = 0;
-                          setcookie('count_product', $count, strtotime('+30 days'));
+                          setcookie('count_product', $count, strtotime('+3 days'), "/");
                       } else {
                           if ($_COOKIE['count_product'] > 0) {
                               echo '<span class="counter-product" style="margin-left: 25px;">'.$_COOKIE['count_product'].'</span>';
@@ -427,7 +427,7 @@ AppAsset::register($this);
                 $('.form-cart').show();
                 //скрываем "корзина пуста"
                 $('.empty-cart').hide();
-                alert('The product was added to the cart!');
+                alert('The product was added to the cart! Order it within 3 days.');
               }else{
                 alert('You are is already added product in the cart!');
               }
@@ -495,7 +495,15 @@ AppAsset::register($this);
       var message = $('#rent-message').val();
       var time_start = $("#datetimepicker1").find("input").val();
       var time_end = $("#datetimepicker2").find("input").val();
-      alert(time_start);
+      $.ajax({
+        type: 'GET',
+        url: "/extras/rent",
+        data: {'id':id, 'name':name, 'surname':surname, 'phone':phone, 'email':email, 'message':message, 'time_start':time_start, 'time_end':time_end},
+        response: 'text',
+        success: function(data){
+          alert('The application was successfuly created!');
+        }
+      });
     }  
   </script>
 

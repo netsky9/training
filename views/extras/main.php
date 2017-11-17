@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="modal fade" id="rent-1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <form>
+        <!--<form>-->
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="rentLabel">Rent Bicycle №<span id="id_rent_product"></span></h4>
@@ -137,7 +137,7 @@ $this->params['breadcrumbs'][] = $this->title;
           <div class="modal-footer modal-rent">
             <button class="btn-black" onclick="rentAddToDb()">SEND</button>
           </div>
-        </form>
+        <!--</form>-->
       </div>
     </div>
   </div>

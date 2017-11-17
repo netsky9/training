@@ -4,12 +4,10 @@ namespace app\modules\admin\controllers;
 
 use Yii;
 use app\modules\admin\models\Orders;
-use app\modules\admin\models\Products;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
  * OrdersController implements the CRUD actions for Orders model.
@@ -22,18 +20,6 @@ class OrdersController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                //правила. вход разрешен только для админа, если пользователь пытается зайти, ему вылетит forbidden
-                //правила нужно прописывать перед каждым контроллером и указывать actions
-                'rules' => [
-                    [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'model'],
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -51,14 +37,6 @@ class OrdersController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Orders::find(),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'status' => SORT_ASC,
-                ]
-            ],
         ]);
 
         return $this->render('index', [
@@ -88,7 +66,7 @@ class OrdersController extends Controller
         $model = new Orders();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_order]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -107,7 +85,7 @@ class OrdersController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_order]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,

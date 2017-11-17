@@ -21,32 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_order',
-            [
-                'attribute' => 'id_product',
-                'value' => function ($data) {
-                    return '<a href="/bicycles/view?id_product='.$data->products->id_product.'">'.$data->products->title_product.'</a>';
-                },
-                'format' => 'html',
-            ],
-            //'id_user',
-            [
-                'attribute' => 'id_user',
-                'value' => function ($data) {
-                    return '<a href="/admin/users/view?id='.$data->users->id_user.'">'.$data->users->name.'</a>';
-                },
-                'format' => 'html',
-            ],
+            'id',
+            'id_user',
             'datetime',
-            'count',
-            // 'sum',
-            // 'id_discount',
             'status',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
         'tableOptions' => [
-                'class' => 'table table-hover table-striped'
-            ],
+            'class' => 'table table-hover table-striped'
+        ],
     ]); ?>
 </div>

@@ -7,13 +7,9 @@ use Yii;
 /**
  * This is the model class for table "orders".
  *
- * @property integer $id_order
- * @property integer $id_product
+ * @property integer $id
  * @property integer $id_user
  * @property string $datetime
- * @property integer $count
- * @property integer $sum
- * @property integer $id_discount
  * @property string $status
  */
 class Orders extends \yii\db\ActiveRecord
@@ -26,21 +22,10 @@ class Orders extends \yii\db\ActiveRecord
         return 'orders';
     }
 
-    public function getProducts()
+    public function getProductsOrders()
     {
-        return $this->hasOne(Products::className(), ['id_product' => 'id_product']);
+        return $this->hasMany(ProductsOrders::className(), ['id_order' => 'id']);
     }
-
-    public function getUsers()
-    {
-        return $this->hasOne(Users::className(), ['id_user' => 'id_user']);
-    }
-
-
-    /*public function getProductsById($id)
-    {
-        return $this->find();
-    } */
 
     /**
      * @inheritdoc
@@ -48,8 +33,8 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_product', 'id_user', 'datetime', 'count', 'sum', 'id_discount', 'status'], 'required'],
-            [['id_product', 'id_user', 'count', 'sum', 'id_discount'], 'integer'],
+            [['id_user', 'datetime', 'status'], 'required'],
+            [['id_user'], 'integer'],
             [['datetime'], 'safe'],
             [['status'], 'string', 'max' => 200],
         ];
@@ -61,13 +46,9 @@ class Orders extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_order' => 'Id Order',
-            'id_product' => 'Product',
-            'id_user' => 'User',
+            'id' => 'ID',
+            'id_user' => 'Id User',
             'datetime' => 'Datetime',
-            'count' => 'Count',
-            'sum' => 'Sum',
-            'id_discount' => 'Id Discount',
             'status' => 'Status',
         ];
     }

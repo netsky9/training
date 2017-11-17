@@ -116,7 +116,7 @@ AppAsset::register($this);
                   //количество товаров в корзине
                   if (!isset($_COOKIE['count_product'])) {
                       $count = 0;
-                      setcookie('count_product', $count, strtotime('+30 days'));
+                      setcookie('count_product', $count, strtotime('+3 days'), "/");
                   } else {
                       if ($_COOKIE['count_product'] > 0) {
                           echo '<span class="counter-product" style="margin-left: 25px;">'.$_COOKIE['count_product'].'</span>';

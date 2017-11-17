@@ -76,13 +76,17 @@ class Product extends ActiveRecord
 
     public static function getPopularProduct()
     {
-        $query = 'SELECT orders.*, COUNT(orders.id_product) as count_order, products.*
-                  FROM orders
-                  INNER JOIN products ON orders.id_product = products.id_product
-                  GROUP BY orders.id_product
+        $query = 'SELECT products_orders.*, COUNT(products_orders.id_product) as count_order, products.*
+                  FROM products_orders
+                  INNER JOIN products ON products_orders.id_product = products.id_product
+                  GROUP BY products_orders.id_product
                   ORDER BY count_order DESC
                   LIMIT 3
                   ';
+        /*$tmp = 'SELECT *
+                  FROM products
+                  LIMIT 3
+                  ';*/
         $Product = Yii::$app->db->createCommand($query)->queryAll();
 
         return $Product;

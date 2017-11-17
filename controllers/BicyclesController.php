@@ -11,10 +11,11 @@ use app\models\User;
 use Yii;
 
 use app\modules\admin\models\Orders;
+use app\modules\admin\models\ProductsOrders;
 
 use yii\data\Pagination;
 
-define("COOCKIE_TIME", "+30 days");
+define("COOCKIE_TIME", "+3 days");
 
 class BicyclesController extends Controller
 {
@@ -95,7 +96,7 @@ class BicyclesController extends Controller
                         $Count--;
                     
                         //обновлям куки
-                        setcookie('count_product', '');
+                        setcookie('count_product', '', strtotime('-60 days'), "/");
                         setcookie('count_product', $Count, strtotime(COOCKIE_TIME), "/");
                         $CountUpdate = $_COOKIE['count_product'];
 
@@ -119,7 +120,7 @@ class BicyclesController extends Controller
                     $new_value = serialize($Prod);
                 
                     //обновлям куки
-                    setcookie($id, "");
+                    setcookie('count_product', '', strtotime('-60 days'), "/");
                     setcookie($id, $new_value, strtotime(COOCKIE_TIME), "/");
                 }
             }
@@ -145,7 +146,7 @@ class BicyclesController extends Controller
                 $Product['count'] = $product['count'];
                 $Product['counter'] = 1;
 
-                setcookie($Product['id_product'], serialize($Product), strtotime('+30 days'), "/");
+                setcookie($Product['id_product'], serialize($Product), strtotime(COOCKIE_TIME), "/");
                 
                 foreach ($_COOKIE as $id => $value) {
                     if ($id > 0) {
@@ -158,8 +159,8 @@ class BicyclesController extends Controller
                     $Count++;
                     
                     //обновлям куки
-                    setcookie('count_product', ' ', time()-3600, "/");
-                    setcookie('count_product', $Count, strtotime('+30 days'), "/");
+                    setcookie('count_product', '', strtotime('-60 days'), "/");
+                    setcookie('count_product', $Count, strtotime(COOCKIE_TIME), "/");
                     $CountUpdate = $_COOKIE['count_product'];
 
                     //return count products in the cart
@@ -259,22 +260,31 @@ class BicyclesController extends Controller
           //echo 'Your new login is: '.$user['login'].' and password: '.$user['pass'];
 
         }
+
+        $modelOrder = new Orders;
+
+        //$modelOrder->id_product = $Prod['id_product'];
+        $modelOrder->id_user = $addedUser->id_user;
+        $modelOrder->datetime = date('Y-m-d H:m:s');
+        //$modelOrder->count = $Prod['counter'];
+        //$modelOrder->sum = $Prod['counter'] * $Prod['price'];
+        //$modelOrder->id_discount = 0;
+        $modelOrder->status = 'not payed';
+        $modelOrder->insert();
+        $idOrder = Yii::$app->db->getLastInsertID();
+
+
         foreach ($_COOKIE as $id => $value) {
 
              if($id > 0){
                 $Prod = unserialize($value);
-                //var_dump($Prod);
 
-                $modelProd = new Orders;
+                $modelProdOrd = new ProductsOrders;
+                $modelProdOrd->id_product = $Prod['id_product'];
+                $modelProdOrd->id_order = $idOrder;
+                $modelProdOrd->count = $Prod['counter'];
 
-                $modelProd->id_product = $Prod['id_product'];
-                $modelProd->id_user = $addedUser->id_user;
-                $modelProd->datetime = date('Y-m-d H:m:s');
-                $modelProd->count = $Prod['counter'];
-                $modelProd->sum = $Prod['counter'] * $Prod['price'];
-                $modelProd->id_discount = 0;
-                $modelProd->status = 'not payed';
-                $modelProd->insert();  
+                $modelProdOrd->insert();
              }
              
             setcookie($id,"test",strtotime('-60 days'),"/");

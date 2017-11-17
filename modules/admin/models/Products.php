@@ -48,6 +48,11 @@ class Products extends \yii\db\ActiveRecord
         return $this->hasMany(Detailvalue::className(), ['id_product' => 'id_product']);
     }
 
+    /*public function getProductsOrders()
+    {
+        return $this->hasMany(ProductsOrders::className(), ['id_product' => 'id_product']);
+    }*/
+    
 
     /**
      * @inheritdoc
