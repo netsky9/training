@@ -451,7 +451,7 @@ AppAsset::register($this);
             data: {'name' : name, 'surname' : surname,'email' : email,'phone' : phone},
             response:'html',
             success:function(data){
-              alert('Your order will be processed soon!');
+              alert(data);
             }
           });
       });

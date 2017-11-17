@@ -23,8 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'labelOptions' => ['class' => 'col-lg-1 control-label'],
         ],
     ]); ?>
-
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <? if($model->scenario === 'loginWithEmail'): ?>
+            <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+        <? else: ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <? endif; ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 

@@ -230,6 +230,36 @@ class BicyclesController extends Controller
     //Ajax:
     public function actionAddtodb()
     {
+        $cookieCountProd = 0;
+        foreach ($_COOKIE as $id => $value) {
+             if($id > 0){
+                $cookieCountProd++;
+             }
+        }
+
+        if(cookieCountProd == 0){
+            echo 'Your order will be processed soon!';
+            exit();
+        }
+
+        //проверка на количество товаров
+        foreach ($_COOKIE as $id => $value) {
+
+             if($id > 0){
+                $Prod = unserialize($value);
+               /* echo 'counter = '.$Prod['counter'];
+                exit();*/
+                $Product = Product::find()->where('id_product = :id_product', [':id_product' => $Prod['id_product']])->one();
+                if($Product->count < $Prod['counter']){
+                    setcookie('count_product', '', strtotime('-60 days'), "/");
+                    setcookie('count_product', $cookieCountProd, strtotime(COOCKIE_TIME), "/");
+                    echo 'We have only '.$Product->count.' products "'.$Prod['title_product'].'"';
+                    exit();
+                }
+             }
+        }
+
+
       //сначала добавляем пользователя
       if(isset($_GET['name']) && isset($_GET['surname']) && isset($_GET['email']) && isset($_GET['phone']) ){
           $user['name'] = $_GET['name'];
@@ -237,43 +267,50 @@ class BicyclesController extends Controller
           $user['email'] = $_GET['email'];
           $user['phone'] = $_GET['phone'];
 
-          //возможна нужна проверка на существование такого пользователя, хотя вероятность очеьн мала
-          $user['login'] = $user['name'].$this->generateRandomStr(5);
+          //проверка на существование емейла
+          $newUser = User::find()->where('email = :email', [':email' => $user['email']])->one();
+          if($newUser){
+                $userId = $newUser->id_user;            
+          }else{
+              $user['login'] = $user['name'];
 
-          $user['pass'] = $this->generateRandomStr();
+              $user['pass'] = $this->generateRandomStr();
 
-          $model = new User;
-          $model->username = $user['login'];
-          $model->password = Yii::$app->security->generatePasswordHash($user['pass']);
-          $model->name = $user['name'];
-          $model->last_name = $user['surname'];
-          $model->phone = $user['phone'];
-          $model->email = $user['email'];
+              $model = new User;
+              $model->username = $user['login'];
+              $model->password = Yii::$app->security->generatePasswordHash($user['pass']);
+              $model->name = $user['name'];
+              $model->last_name = $user['surname'];
+              $model->phone = $user['phone'];
+              $model->email = $user['email'];
 
-          $model->insert();
+              $model->insert();
 
-          $addedUser = User::find()->where('username = :username', [':username' => $user['login']])->one();
-          //назначаем роль новому пользователю
-          $userRole = Yii::$app->authManager->getRole('user');
-          Yii::$app->authManager->assign($userRole, $addedUser->id_user);
+              $addedUser = User::find()->where('username = :username', [':username' => $user['login']])->one();
+              //назначаем роль новому пользователю
+              $userRole = Yii::$app->authManager->getRole('user');
+              Yii::$app->authManager->assign($userRole, $addedUser->id_user);
 
+              $userId = $addedUser->id_user;
+          }
+          /*
+           * Тут нужно реализовать отправку пароля (логин = емайл) пользователю на почту 
+           */
           //echo 'Your new login is: '.$user['login'].' and password: '.$user['pass'];
 
         }
 
-        $modelOrder = new Orders;
 
-        //$modelOrder->id_product = $Prod['id_product'];
-        $modelOrder->id_user = $addedUser->id_user;
+        //создаем заказ
+        $modelOrder = new Orders;
+        $modelOrder->id_user = $userId;
         $modelOrder->datetime = date('Y-m-d H:m:s');
-        //$modelOrder->count = $Prod['counter'];
-        //$modelOrder->sum = $Prod['counter'] * $Prod['price'];
-        //$modelOrder->id_discount = 0;
         $modelOrder->status = 'not payed';
         $modelOrder->insert();
         $idOrder = Yii::$app->db->getLastInsertID();
-
-
+        
+       
+        //выбираем товары из кук и добавляем в базу
         foreach ($_COOKIE as $id => $value) {
 
              if($id > 0){
@@ -283,13 +320,19 @@ class BicyclesController extends Controller
                 $modelProdOrd->id_product = $Prod['id_product'];
                 $modelProdOrd->id_order = $idOrder;
                 $modelProdOrd->count = $Prod['counter'];
-
                 $modelProdOrd->insert();
+
+                //отнимаем у продукта количество заказанных товаров
+                $modelProduct = Product::findOne($Prod['id_product']);
+                $modelProduct->count = $Prod['count']-$Prod['counter'];
+                $modelProduct->update();
+
              }
              
-            setcookie($id,"test",strtotime('-60 days'),"/");
+            setcookie($id," ",strtotime('-60 days'),"/");
         }
-
+        //передача обратно в скрипт
+        echo 'Your order will be processed soon!';
     }
 
     /*

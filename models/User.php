@@ -13,6 +13,11 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return 'users';
     }
 
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+
     public static function findIdentity($id)
     {
         return static::findOne(['id_user' => $id]);
