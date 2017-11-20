@@ -337,9 +337,9 @@ class BicyclesController extends Controller
             setcookie($id," ",strtotime('-60 days'),"/");
 
             //передача обратно в скрипт
-            echo 'Your order will be processed soon!';
+            
         }
-        
+        echo 'Your order will be processed soon!';
     }
 
     /*

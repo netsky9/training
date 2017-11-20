@@ -501,7 +501,7 @@ AppAsset::register($this);
         data: {'id':id, 'name':name, 'surname':surname, 'phone':phone, 'email':email, 'message':message, 'time_start':time_start, 'time_end':time_end},
         response: 'text',
         success: function(data){
-          alert('The application was successfuly created!');
+          alert(data);
         }
       });
     }  
