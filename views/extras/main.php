@@ -7,6 +7,7 @@ use yii\helpers\BaseStringHelper;
 use yii\widgets\LinkPager;
 use yii\helpers\Url;
 use app\models\Image;
+use app\modules\admin\models\ExtrasPrice;
 
 $this->title = 'Extras';
 $this->params['breadcrumbs'][] = $this->title;
@@ -41,28 +42,30 @@ $this->params['breadcrumbs'][] = $this->title;
               }
             ?>
             <div class="row rate-price">
+              <? $ExtrasPrice = ExtrasPrice::find()->where('id_product = :id_product', [':id_product' => $Bic['id_product']])->one();
+              ?>
               <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="rate-time">
                   1 hour
-                  <span class="rate-money">$12.0</span>
+                  <br><span class="rate-money">$<?= $ExtrasPrice->one_hour ?></span>
                 </div>
               </div>
               <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="rate-time">
-                  6 hour
-                  <span class="rate-money">$65.0</span>
+                  6 hours
+                  <br><span class="rate-money">$<?= $ExtrasPrice->six_hour ?></span>
                 </div>
               </div>
               <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="rate-time">
-                  12 hour
-                  <span class="rate-money">$100.0</span>
+                  12 hours
+                  <br><span class="rate-money">$<?= $ExtrasPrice->twelve_hours ?></span>
                 </div>  
               </div>
               <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="rate-time">
                   1 week
-                  <span class="rate-money">$250.0</span>
+                  <br><span class="rate-money">$<?= $ExtrasPrice->one_week ?></span>
                 </div>
               </div>
             </div>
@@ -76,6 +79,11 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
           </div>
           <? endforeach ?>
+          <div class="super-slim-container">
+          <!-- maxButtonCount - количество видимых кнопок -->
+          <?php echo LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 5]); ?>
+          </ul>
+        </div>
 
         </div>
       </div>

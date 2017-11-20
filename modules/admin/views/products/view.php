@@ -54,8 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 
-       <?php $Details = $model->detailvalue;?>
-
+        <?php $Details = $model->detailvalue;?>
         <table id="w0" class="table table-striped table-bordered detail-view">
             <tbody>
                 <?php foreach ($Details as $Det):
@@ -65,6 +64,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach ?>
             </tbody>
         </table>
+
+        <?php $ExtrasPrice = $model->extrasprice; 
+            if($model->rent_sale > 0):
+        ?>
+        <table id="w0" class="table table-striped table-bordered detail-view">
+            <thead>
+                <tr><th>One Hour</th><th>Six Hour</th><th>Twelve Hours</th><th>One Week</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr><td><?= $ExtrasPrice['one_hour'] ?></td><td><?= $ExtrasPrice['six_hour'] ?></td><td><?= $ExtrasPrice['twelve_hours'] ?></td><td><?= $ExtrasPrice['one_week'] ?></td><td><a href="/admin/extrasprice/view?id=<?= $ExtrasPrice['id'] ?>" title="View" aria-label="View" data-pjax="0"><span class="glyphicon glyphicon-eye-open"></span></a> <a href="/admin/extrasprice/update?id=<?= $ExtrasPrice['id'] ?>" title="Update" aria-label="Update" data-pjax="0"><span class="glyphicon glyphicon-pencil"></span></a> </td></tr>
+            </tbody>
+        </table>
+        <? endif ?>
 
 
     <p>

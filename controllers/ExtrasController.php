@@ -83,40 +83,43 @@ class ExtrasController extends Controller
 
         
 
+        //проверка на существование емейла
+        $newUser = User::find()->where('email = :email', [':email' => $_GET['email']])->one();
+        if($newUser){
+            $id = $newUser->id_user;            
+        }else{
+            $user['name'] = $_GET['name'];
+            $user['surname'] = $_GET['surname'];
+            $user['email'] = $_GET['email'];
+            $user['phone'] = $_GET['phone'];
 
+            //возможна нужна проверка на существование такого пользователя, хотя вероятность очеьн мала
+            $user['login'] = $user['name'].$this->generateRandomStr(5);
 
-        $user['name'] = $_GET['name'];
-        $user['surname'] = $_GET['surname'];
-        $user['email'] = $_GET['email'];
-        $user['phone'] = $_GET['phone'];
+            $user['pass'] = $this->generateRandomStr();
 
-        //возможна нужна проверка на существование такого пользователя, хотя вероятность очеьн мала
-        $user['login'] = $user['name'].$this->generateRandomStr(5);
+            $model = new User;
+            $model->username = $user['login'];
+            $model->password = Yii::$app->security->generatePasswordHash($user['pass']);
+            $model->name = $user['name'];
+            $model->last_name = $user['surname'];
+            $model->phone = $user['phone'];
+            $model->email = $user['email'];
 
-        $user['pass'] = $this->generateRandomStr();
-
-        $model = new User;
-        $model->username = $user['login'];
-        $model->password = Yii::$app->security->generatePasswordHash($user['pass']);
-        $model->name = $user['name'];
-        $model->last_name = $user['surname'];
-        $model->phone = $user['phone'];
-        $model->email = $user['email'];
-
-        $model->insert();
-
-        $id = Yii::$app->db->getLastInsertID();
-
-        $userRole = Yii::$app->authManager->getRole('user');
-        Yii::$app->authManager->assign($userRole, $id);
+            $model->insert();
+            $id = Yii::$app->db->getLastInsertID();
+            $userRole = Yii::$app->authManager->getRole('user');
+            Yii::$app->authManager->assign($userRole, $id);
+        }
+        
 
         $model = new Rent;
         $model->id_product = $_GET['id'];
         $model->id_user = $id;
         $model->message = $_GET['message'];
-        $model->rent_begin = $this->formattingDate($_GET['time_start']);;
-        $model->rent_end = $this->formattingDate($_GET['time_end']);;
-
+        $model->rent_begin = $this->formattingDate($_GET['time_start']);
+        $model->rent_end = $this->formattingDate($_GET['time_end']);
+        $model->status = 'not payed'; 
         $model->insert();
 
         //echo 'id: '.$model->id_product.'; '.'id: '.$model->id_user.'; '.'message: '.$model->message.'; '.'rent_begin: '.$model->rent_begin.'; '.'rent_end: '.$model->rent_end;

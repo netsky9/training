@@ -4,6 +4,8 @@ namespace app\modules\admin\controllers;
 
 use Yii;
 use app\modules\admin\models\Orders;
+use app\modules\admin\models\ProductsOrders;
+use app\modules\admin\models\Products;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -38,6 +40,48 @@ class OrdersController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Orders::find(),
         ]);
+        $orders = Orders::find()->where('status = :status', [':status' => 'not payed'])->all();
+        foreach ($orders as $ord) {
+            //echo $ord['datetime'];
+            $d = explode(' ',$ord->datetime);
+            $date = explode('-', $d[0]);
+            $time = explode(':', $d[1]);
+            
+            $year = (int) $date[0]; $month = (int) $date[1]; $day = (int) $date[2]; $hour = (int) $time[0]; $minute = (int) $time[1]; $second = (int) $time[2]; 
+            
+            $day +=3; //добавляем время
+
+            if($day<9) $day = '0'.$day; 
+            if($month<9) $month = '0'.$month; 
+            if($hour<9) $hour = '0'.$hour; 
+            if($minute<9) $minute = '0'.$minute; 
+            if($second<9) $second = '0'.$second;
+
+            $date = $year.'-'.$month.'-'.$day.' '.$hour.':'.$minute.':'.$second;
+
+            $dateNow = date("Y-m-d H:i:s");
+
+            //сравниваем даты
+            if($date < $dateNow){
+                //добавляем зарезервированнное количество товаров обратно
+                $Product = $ord->productsOrders;
+                foreach ($Product as $product):
+                    echo $product->count;
+                    $modelProd = Products::find()->where('id_product = :id_product', [':id_product' => $product->id_product])->one();
+                    $modelProd->count = $modelProd->count + $product->count;
+                    $modelProd->update();
+                endforeach;
+
+                //удаление просроченных заявок
+                //echo $ord->id.') '.$date. ' и ' .$dateNow.'<br>';  
+                $modelOrd = Orders::find()->where('id = :id', [':id' => $ord->id])->one();
+                $modelOrd->delete();
+                $modelProdOrd = ProductsOrders::find()->where('id_order = :id_order', [':id_order' => $ord->id])->all();
+                foreach ($modelProdOrd as $m) {
+                    $m->delete();
+                }
+            }
+        }
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -101,8 +145,20 @@ class OrdersController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        
+        $Product = ProductsOrders::find()->where('id_order = :id_order', ['id_order' => $id])->all();
+        foreach ($Product as $product):
+            //echo $product->count;
+            $modelProd = Products::find()->where('id_product = :id_product', [':id_product' => $product->id_product])->one();
+            $modelProd->count = $modelProd->count + $product->count;
+            $modelProd->update();
+        endforeach;
 
+        $this->findModel($id)->delete();
+        $ProdOrders = ProductsOrders::find()->where('id_order = :id_order', [':id_order' => $id])->all();
+        foreach ($ProdOrders as $prodOrd) {
+            $prodOrd->delete();
+        }
         return $this->redirect(['index']);
     }
 

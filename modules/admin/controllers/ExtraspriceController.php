@@ -3,16 +3,16 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\modules\admin\models\Rent;
+use app\modules\admin\models\ExtrasPrice;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RentController implements the CRUD actions for Rent model.
+ * ExtraspriceController implements the CRUD actions for ExtrasPrice model.
  */
-class RentController extends Controller
+class ExtraspriceController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,34 +30,14 @@ class RentController extends Controller
     }
 
     /**
-     * Lists all Rent models.
+     * Lists all ExtrasPrice models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Rent::find(),
+            'query' => ExtrasPrice::find(),
         ]);
-
-        $Rent = Rent::find()->where('status = :status', [':status' => 'not payed'])->all();
-        //удаление заказа, если ео не оплатили и началось время проката
-        foreach ($Rent as $rent) {
-            $now = date("Y-m-d H:i:s");            
-            //сравниваем даты, и удаляем, если время проката уже началось, а пользователь еще не оплатил
-            if($now > $rent->rent_begin){
-                $rent->delete();
-            }
-        }
-
-        //переводим заказ в статус выполненного, если его оплатили и время аренды уже закончилось 
-        $Rent = Rent::find()->where('status = :status', [':status' => 'payed'])->all();
-        foreach ($Rent as $rent) {
-            $now = date("Y-m-d H:i:s");
-            if($now > $rent->rent_end){
-                $rent->status = 'complete';
-                $rent->update();
-            }
-        }
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -65,7 +45,7 @@ class RentController extends Controller
     }
 
     /**
-     * Displays a single Rent model.
+     * Displays a single ExtrasPrice model.
      * @param integer $id
      * @return mixed
      */
@@ -77,25 +57,26 @@ class RentController extends Controller
     }
 
     /**
-     * Creates a new Rent model.
+     * Creates a new ExtrasPrice model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new Rent();
-
+        $model = new ExtrasPrice();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_rent]);
+           
+            return $this->redirect(['/admin/products']);
         } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
-        }
+       }
+        
     }
 
     /**
-     * Updates an existing Rent model.
+     * Updates an existing ExtrasPrice model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -105,7 +86,7 @@ class RentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_rent]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -114,7 +95,7 @@ class RentController extends Controller
     }
 
     /**
-     * Deletes an existing Rent model.
+     * Deletes an existing ExtrasPrice model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -127,15 +108,15 @@ class RentController extends Controller
     }
 
     /**
-     * Finds the Rent model based on its primary key value.
+     * Finds the ExtrasPrice model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Rent the loaded model
+     * @return ExtrasPrice the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Rent::findOne($id)) !== null) {
+        if (($model = ExtrasPrice::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

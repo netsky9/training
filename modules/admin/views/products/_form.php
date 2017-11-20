@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'price')->textInput() ?>
 
-    <?= $form->field($model, 'rent_sale')->textInput() ?>
+    <?= $form->field($model, 'rent_sale')->dropDownList([0 => 'sale', 1 => 'rent', 2 => 'rent_sale']) ?>
 
     <?= $form->field($model, 'count')->textInput() ?>
 

@@ -29,9 +29,9 @@ class Rent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_product', 'id_user', 'message', 'rent_begin', 'rent_end'], 'required'],
+            [['id_product', 'id_user', 'message', 'rent_begin', 'rent_end', 'status'], 'required'],
             [['id_product', 'id_user'], 'integer'],
-            [['rent_begin', 'rent_end', 'message'], 'safe'],
+            [['rent_begin', 'rent_end', 'message', 'status'], 'safe'],
         ];
     }
 
@@ -47,6 +47,7 @@ class Rent extends \yii\db\ActiveRecord
             'message' => 'Message',
             'rent_begin' => 'Rent Begin',
             'rent_end' => 'Rent End',
+            'status' => 'Status',
         ];
     }
 }

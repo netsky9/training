@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_user',
             'rent_begin',
             'rent_end',
+            'status',
         ],
     ]) ?>
 

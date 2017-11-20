@@ -6,33 +6,29 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Rents';
+$this->title = 'Extras Prices';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="rent-index">
+<div class="extras-price-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Rent', ['create'], ['class' => 'btn btn-success right']) ?>
+        <?= Html::a('Create Extras Price', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_rent',
+            'id',
             'id_product',
-            'id_user',
-            'message',
-            'rent_begin',
-            'rent_end',
-            'status',
+            'one_hour',
+            'six_hour',
+            'twelve_hours',
+            'one_week',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-        'tableOptions' => [
-                'class' => 'table table-hover table-striped'
-            ],
     ]); ?>
 </div>

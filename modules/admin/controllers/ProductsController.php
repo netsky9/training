@@ -5,6 +5,7 @@ namespace app\modules\admin\controllers;
 use Yii;
 use app\modules\admin\models\Products;
 use app\modules\admin\models\Detailvalue;
+use app\modules\admin\models\ExtrasPrice;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -69,8 +70,18 @@ class ProductsController extends Controller
     public function actionCreate()
     {
         $model = new Products();
-
+        $model->view = 0;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model = $this->findModel($model->id_product);
+            $model->image = UploadedFile::getInstance($model, 'image');
+            if ($model->image) {
+                $model->upload();
+            }
+
+            if($model->rent_sale > 0){
+                return $this->redirect(['extrasprice/create', 'id' => $model->id_product]);
+            }
+
             return $this->redirect(['view', 'id' => $model->id_product]);
         } else {
             return $this->render('create', [
@@ -111,7 +122,18 @@ class ProductsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        //удаляем картинки
+        $model->removeImages();
+        
+        if($model->rent_sale > 0){
+            $extrasPrice = ExtrasPrice::find()->where('id_product = :id_product', [':id_product' => $model->id_product])->one();
+            $extrasPrice->delete();
+        }
+
+        //удаление самой модели
+        $model->delete();
         Detailvalue::deleteAll('id_product = :id_product', [':id_product' => $id]);
 
         return $this->redirect(['index']);

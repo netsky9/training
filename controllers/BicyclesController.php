@@ -237,18 +237,16 @@ class BicyclesController extends Controller
              }
         }
 
-        if(cookieCountProd == 0){
+        
+        if($cookieCountProd == 0){
             echo 'Your order will be processed soon!';
             exit();
         }
 
         //проверка на количество товаров
         foreach ($_COOKIE as $id => $value) {
-
              if($id > 0){
                 $Prod = unserialize($value);
-               /* echo 'counter = '.$Prod['counter'];
-                exit();*/
                 $Product = Product::find()->where('id_product = :id_product', [':id_product' => $Prod['id_product']])->one();
                 if($Product->count < $Prod['counter']){
                     setcookie('count_product', '', strtotime('-60 days'), "/");
@@ -261,7 +259,11 @@ class BicyclesController extends Controller
 
 
       //сначала добавляем пользователя
-      if(isset($_GET['name']) && isset($_GET['surname']) && isset($_GET['email']) && isset($_GET['phone']) ){
+      if(isset($_GET['name']) && $_GET['name']!='' 
+          && isset($_GET['surname']) && $_GET['surname']!=''
+          && isset($_GET['email']) && $_GET['email']!=''
+          && isset($_GET['phone']) && $_GET['phone']!=''){
+
           $user['name'] = $_GET['name'];
           $user['surname'] = $_GET['surname'];
           $user['email'] = $_GET['email'];
@@ -298,13 +300,16 @@ class BicyclesController extends Controller
            */
           //echo 'Your new login is: '.$user['login'].' and password: '.$user['pass'];
 
+        }else{
+          echo 'Fill in all the fields!';
+          exit();
         }
 
 
         //создаем заказ
         $modelOrder = new Orders;
         $modelOrder->id_user = $userId;
-        $modelOrder->datetime = date('Y-m-d H:m:s');
+        $modelOrder->datetime = date('Y-m-d H:i:s');
         $modelOrder->status = 'not payed';
         $modelOrder->insert();
         $idOrder = Yii::$app->db->getLastInsertID();
@@ -330,9 +335,11 @@ class BicyclesController extends Controller
              }
              
             setcookie($id," ",strtotime('-60 days'),"/");
+
+            //передача обратно в скрипт
+            echo 'Your order will be processed soon!';
         }
-        //передача обратно в скрипт
-        echo 'Your order will be processed soon!';
+        
     }
 
     /*
