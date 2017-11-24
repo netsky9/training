@@ -18,7 +18,8 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "costa-rico/yii2-images": "dev-master"
+        "costa-rico/yii2-images": "dev-master",
+        "phpoffice/phpexcel": "dev-develop"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -31,7 +32,7 @@
     },
     "config": {
         "github-oauth": {
-          "github.com": "3de211795a15ed9fee6015b47ebbeb9f5588e5a2"
+          "github.com": "0ecf925af3beca95b066137806b9ae513c158b51"
           }
         ,
         "process-timeout": 1800,

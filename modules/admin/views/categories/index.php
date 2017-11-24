@@ -26,7 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id_parent',
                 'value' => function ($data) {
-                    return $data->categories->title ? $data->categories->title : 'parent category';
+                    if(isset($data->categories->title)){
+                        return $data->categories->title;
+                    }else{
+                        return 'parent category';
+                    }
                 },
                 'format' => 'html',
             ],

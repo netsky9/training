@@ -50,4 +50,61 @@ class Rent extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+
+    //report
+    public function orderRent($pages_offset, $pages_limit, $timeStart, $timeEnd, $title, $user){
+        
+        $query = "
+                SELECT rent.*, products.*, users.username as username
+                FROM rent
+                INNER JOIN users ON rent.id_user = users.id_user
+                INNER JOIN products ON rent.id_product = products.id_product
+                WHERE rent.status = 'complete'
+                AND rent.rent_begin > :timeStart AND rent.rent_end < :timeEnd
+                ";
+
+        $pdo = array(':timeStart' => $timeStart, ':timeEnd' => $timeEnd);
+        if($title != null){
+            $query .= ' AND products.title_product LIKE :title';
+            $pdo += [':title' => '%'.$title.'%'];
+        }
+        if($user != null){
+            $query .= ' AND rent.id_user = :user';
+            $pdo += [':user' => $user];
+        }
+            $query .= ' LIMIT :offset, :limit';
+            $pdo += [':offset' => $pages_offset];
+            $pdo += [':limit' => $pages_limit];
+
+        $rentReport = Yii::$app->db->createCommand($query, $pdo)->queryAll();
+
+        return $rentReport;
+    }
+
+    //report count
+    public function orderRentCount($timeStart, $timeEnd, $title, $user){
+        
+        $query = "
+                SELECT rent.*, products.*, COUNT(*) as counter
+                FROM rent
+                INNER JOIN users ON rent.id_user = users.id_user
+                INNER JOIN products ON rent.id_product = products.id_product
+                WHERE rent.status = 'complete'
+                AND rent.rent_begin > :timeStart AND rent.rent_end < :timeEnd
+                ";
+
+        $pdo = array(':timeStart' => $timeStart, ':timeEnd' => $timeEnd);
+        if($title != null){
+            $query .= ' AND products.title_product LIKE :title';
+            $pdo += [':title' => '%'.$title.'%'];
+        }
+        if($user != null){
+            $query .= ' AND rent.id_user = :user';
+            $pdo += [':user' => $user];
+        }
+
+        $rentReport = Yii::$app->db->createCommand($query, $pdo)->queryAll();
+
+        return $rentReport;
+    }
 }

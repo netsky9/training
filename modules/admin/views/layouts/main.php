@@ -82,6 +82,24 @@ AppAsset::register($this);
                         <p>Rent</p>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= Url::to('/admin/reports/orderreports'); ?>">
+                        <i class="pe-7s-note2"></i>
+                        <p>Report orders</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= Url::to('/admin/reports/restreports'); ?>">
+                        <i class="pe-7s-note2"></i>
+                        <p>Report Rest</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= Url::to('/admin/reports/rentsreports'); ?>">
+                        <i class="pe-7s-note2"></i>
+                        <p>Report Rents</p>
+                    </a>
+                </li>
             </ul>
       </div>
     </div>
@@ -208,7 +226,15 @@ AppAsset::register($this);
     </div>
 </div>
 
-<?php $this->endBody() ?>
+<?php $this->endBody() ?>  
+  <!-- Datetime picker -->
+  <script type="text/javascript">
+    $(function(){
+      $('#datetimepicker1').datetimepicker({language: 'ru',minuteStepping:10,defaultDate: new Date(),daysOfWeekDisabled:[0,7]});
+      $('#datetimepicker2').datetimepicker({language: 'ru',minuteStepping:10,defaultDate: new Date()});
+    });
+  </script>
+
 </body>
 </html>
 <?php $this->endPage() ?>

@@ -221,6 +221,7 @@ class BicyclesController extends Controller
 
     public function generateRandomStr($countStr = 10){
       $str = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+      $newPass = "";
       for($i = 0; $i < $countStr; $i++){
         $newPass .= $str[rand(0, strlen($str))];
       }

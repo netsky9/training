@@ -8,6 +8,11 @@ RewriteRule ^css/(.*)$ /web/css/$1 [L]
 RewriteRule ^bootstrap/(.*)$ /web/bootstrap/$1 [L]
 RewriteRule ^js/(.*)$ /web/js/$1 [L]
 RewriteRule ^images/(.*)$ /web/images/$1 [L]
+
+RewriteRule ^upload/(.*)$ /web/upload/$1 [L]
+RewriteRule ^cache(.*)$ /web/upload/cache/$1 [L]
+RewriteRule ^store(.*)$ /web/upload/store/$1 [L]
+
 RewriteRule (.*) /web/$1
 
 
